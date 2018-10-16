@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const Dotenv = require('dotenv-webpack')
 
 module.exports = {
-  devtool: 'source-inline-map',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
