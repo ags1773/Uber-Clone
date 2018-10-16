@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import InputBox from './inputBox'
+import Map from './map'
 
 let watchId
 const script = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&libraries=places`
@@ -46,6 +47,7 @@ class App extends Component {
       return (
         <Fragment>
           <InputBox />
+          <Map userPos={this.state.userPos} />
         </Fragment>
       )
     } else {
