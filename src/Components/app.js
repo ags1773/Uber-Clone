@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react'
-import InputBox from './inputBox'
+import InputBoxes from './inputBoxes'
 import Map from './map'
 
 let watchId
@@ -39,16 +39,26 @@ class App extends Component {
     }
     watchId = navigator.geolocation.watchPosition(geoSuccess, geoError, options)
   }
-
   componentWillUnmount () {
     navigator.geolocation.clearWatch(watchId)
+  }
+  updateOriginCoordinates (lat, lng) {
+    this.setState({origin: {lat: lat, lng: lng}})
+    console.log('Origin coordn updated!', this.state)
+  }
+  updateDestinationCoordinates (lat, lng) {
+    this.setState({destination: {lat: lat, lng: lng}})
+    console.log('Destination coordn updated!', this.state)
   }
 
   render () {
     if (this.state.scriptLoaded) {
       return (
         <Fragment>
-          <InputBox />
+          <InputBoxes
+            updateOriginCoordinates={this.updateOriginCoordinates.bind(this)}
+            updateDestinationCoordinates={this.updateDestinationCoordinates.bind(this)}
+          />
           <Map origin={this.state.origin} destination={this.state.destination} userPos={this.state.userPos} />
         </Fragment>
       )
