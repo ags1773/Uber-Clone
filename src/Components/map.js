@@ -1,61 +1,42 @@
 import React, {Component} from 'react'
 import './map.css'
 
-class Map extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      origin: this.props.origin,
-      destination: this.props.destination,
-      userPos: this.props.userPos
-    }
-  }
+let map, marker, directionsService, directionsDisplay
 
+class Map extends Component {
   componentDidMount () {
-    let map = new google.maps.Map(document.getElementById('map'), {
-      center: this.state.userPos,
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: this.props.userPos,
       zoom: 15
     })
-    let marker = new google.maps.Marker({
-      position: this.state.userPos,
+    marker = new google.maps.Marker({
+      position: this.props.userPos,
       map: map
     })
-    this.setState({map, marker})
-
-    // display routes
-    let directionsService = new google.maps.DirectionsService
-    let directionsDisplay = new google.maps.DirectionsRenderer
-    directionsDisplay.setMap(map)
-    directionsService.route({
-      origin: this.state.origin,
-      destination: this.state.destination,
-      travelMode: 'DRIVING'
-    }, function (response, status) {
-      if (status === 'OK') {
-        directionsDisplay.setDirections(response)
-      } else {
-        window.alert('Directions request failed due to ' + status)
-      }
-    })
+    directionsService = new google.maps.DirectionsService()
+    directionsDisplay = new google.maps.DirectionsRenderer()
   }
 
-  static getDerivedStateFromProps (nextProps, prevState) {
-    let newState = {}
-    let f = 0
-    if (prevState.userPos === nextProps.userPos) {
-      f = 1
-      newState['userPos'] = nextProps.userPos
+  componentWillUpdate () {
+    if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
+      directionsDisplay.setMap(map)
+      directionsService.route({
+        origin: this.props.origin,
+        destination: this.props.destination,
+        travelMode: 'DRIVING'
+      }, function (response, status) {
+        if (status === 'OK') {
+          directionsDisplay.setDirections(response)
+        } else {
+          window.alert('Directions request failed due to ' + status)
+        }
+      })
     }
-    if (prevState.origin === nextProps.origin) {
-      f = 1
-      newState['origin'] = nextProps.origin
-    }
-    if (prevState.destination === nextProps.destination) {
-      f = 1
-      newState['destination'] = nextProps.destination
-    }
-    if (f) return (newState)
-    return null
+    marker.setPosition(this.props.userPos)
+  }
+
+  isEmpty (obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object
   }
 
   render () {

@@ -19,15 +19,15 @@ class App extends Component {
     super()
     this.state = {
       scriptLoaded: false,
-      origin: {lat: 12.9615, lng: 77.6442},
-      destination: {lat: 12.9793, lng: 77.6406},
+      origin: {},
+      destination: {},
       userPos: {lat: 28.7041, lng: 77.1025}
     }
   }
   componentDidMount () {
     loadScript(script)
       .then(() => this.setState({scriptLoaded: true}))
-      .catch(e => console.log(e))
+      // .catch(e => console.log(e))
     let geoSuccess = position => {
       this.setState({pos: {lat: position.coords.latitude, lng: position.coords.longitude}})
     }
