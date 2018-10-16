@@ -19,6 +19,8 @@ class App extends Component {
     super()
     this.state = {
       scriptLoaded: false,
+      origin: {lat: 12.9615, lng: 77.6442},
+      destination: {lat: 12.9793, lng: 77.6406},
       userPos: {lat: 28.7041, lng: 77.1025}
     }
   }
@@ -47,7 +49,7 @@ class App extends Component {
       return (
         <Fragment>
           <InputBox />
-          <Map userPos={this.state.userPos} />
+          <Map origin={this.state.origin} destination={this.state.destination} userPos={this.state.userPos} />
         </Fragment>
       )
     } else {
