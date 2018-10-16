@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import InputBox from './inputBox'
 
+let watchId
 const script = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&libraries=places`
 function loadScript (src) {
   return new Promise((resolve, reject) => {
@@ -16,14 +17,30 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-      scriptLoaded: false
+      scriptLoaded: false,
+      userPos: {lat: 28.7041, lng: 77.1025}
     }
   }
   componentDidMount () {
     loadScript(script)
       .then(() => this.setState({scriptLoaded: true}))
       .catch(e => console.log(e))
+    let geoSuccess = position => {
+      this.setState({pos: {lat: position.coords.latitude, lng: position.coords.longitude}})
+    }
+    let geoError = () => {
+      console.log('No position available')
+    }
+    let options = {
+      enableHighAccuracy: true
+    }
+    watchId = navigator.geolocation.watchPosition(geoSuccess, geoError, options)
   }
+
+  componentWillUnmount () {
+    navigator.geolocation.clearWatch(watchId)
+  }
+
   render () {
     if (this.state.scriptLoaded) {
       return (
