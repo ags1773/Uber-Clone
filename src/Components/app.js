@@ -1,6 +1,8 @@
 import React, {Component, Fragment} from 'react'
 import InputBoxes from './inputBoxes'
 import Map from './map'
+import NavBar from './navBar/navBar'
+import HomeComponent from './homeComponent/homeComponent'
 
 let watchId
 const script = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&libraries=places`
@@ -54,11 +56,12 @@ class App extends Component {
     if (this.state.scriptLoaded) {
       return (
         <Fragment>
+          <NavBar />
+          <HomeComponent />
           <InputBoxes
             updateOriginCoordinates={this.updateOriginCoordinates.bind(this)}
             updateDestinationCoordinates={this.updateDestinationCoordinates.bind(this)}
           />
-          <Map origin={this.state.origin} destination={this.state.destination} userPos={this.state.userPos} />
         </Fragment>
       )
     } else {
@@ -72,3 +75,5 @@ class App extends Component {
 }
 
 export default App
+
+{/* <Map origin={this.state.origin} destination={this.state.destination} userPos={this.state.userPos} /> */}
