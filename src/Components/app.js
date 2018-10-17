@@ -21,10 +21,11 @@ class App extends Component {
       scriptLoaded: false,
       origin: {},
       destination: {},
-      userPos: {lat: 28.7041, lng: 77.1025}
+      userPos: {},
+      something: 0
     }
   }
-  componentDidMount () {
+  componentWillMount () {
     loadScript(script)
       .then(() => this.setState({scriptLoaded: true}))
       .catch(e => console.log(e))
@@ -44,11 +45,9 @@ class App extends Component {
   }
   updateOriginCoordinates (lat, lng) {
     this.setState({origin: {lat: lat, lng: lng}})
-    console.log('Origin coordn updated!', this.state)
   }
   updateDestinationCoordinates (lat, lng) {
     this.setState({destination: {lat: lat, lng: lng}})
-    console.log('Destination coordn updated!', this.state)
   }
 
   render () {
