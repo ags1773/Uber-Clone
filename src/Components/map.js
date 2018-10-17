@@ -9,10 +9,7 @@ class Map extends Component {
       center: this.props.userPos,
       zoom: 15
     })
-    marker = new google.maps.Marker({
-      position: this.props.userPos,
-      map: map
-    })
+    marker = new google.maps.Marker()
     directionsService = new google.maps.DirectionsService()
     directionsDisplay = new google.maps.DirectionsRenderer()
   }
@@ -32,6 +29,8 @@ class Map extends Component {
         }
       })
     }
+    map.setCenter(this.props.userPos)
+    marker.setMap(map)
     marker.setPosition(this.props.userPos)
   }
 

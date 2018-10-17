@@ -27,9 +27,9 @@ class App extends Component {
   componentDidMount () {
     loadScript(script)
       .then(() => this.setState({scriptLoaded: true}))
-      // .catch(e => console.log(e))
+      .catch(e => console.log(e))
     let geoSuccess = position => {
-      this.setState({pos: {lat: position.coords.latitude, lng: position.coords.longitude}})
+      this.setState({userPos: {lat: position.coords.latitude, lng: position.coords.longitude}})
     }
     let geoError = () => {
       console.log('No position available')
