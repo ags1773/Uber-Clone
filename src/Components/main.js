@@ -18,7 +18,7 @@ class Main extends Component {
     return (
       <Fragment>
         <div className='has-background-grey-light'>
-          <li>--- Temperory ---</li>
+          <li>--- Temporary ---</li>
           <li><Link to='/'>Home</Link></li>
           <li><Link to='/user'>User</Link></li>
           <li><Link to='/driverWait'>DriverWait</Link></li>

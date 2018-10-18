@@ -17,7 +17,7 @@ class Navbar extends Component {
     return (
       <nav className='navbar' role='navigation' aria-label='main navigation'>
         <div className='navbar-brand'>
-          <a className='navbar-item' href='#'>
+          <a className='navbar-item' href='/'>
             <img src='https://res.cloudinary.com/dwecmtn7q/image/upload/v1539774801/uber_logo.jpg' />
           </a>
           <a href='#' role='button' className='navbar-burger burger' aria-label='menu' aria-expanded='false' data-target='navbar'>
@@ -36,7 +36,7 @@ class Navbar extends Component {
             <p className='navbar-item'>
               User | Signed in as: ---
             </p>
-            {/* <div className='navbar-item'> 
+            {/* <div className='navbar-item'>
               <div className='buttons'>
                 <a className='button is-dark'>
                   <strong>Sign up</strong>
