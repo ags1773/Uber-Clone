@@ -13,8 +13,14 @@ class User extends Component {
   constructor () {
     super()
     this.state = {
-      origin: {},
-      destination: {},
+      origin: {
+        latLng: {},
+        address: ''
+      },
+      destination: {
+        latLng: {},
+        address: ''
+      },
       userPos: {lat: 12.9716, lng: 77.5946},
       drivers: []
     }
@@ -25,11 +31,9 @@ class User extends Component {
   }
   updateOrigin (obj) {
     this.setState({origin: obj})
-    console.log('Origin Updated!! >>', this.state)
   }
   updateDestination (obj) {
     this.setState({destination: obj})
-    console.log('Destination Updated!! >>', this.state)
   }
 
   // ---- Lifecycle Hooks ----
@@ -68,10 +72,10 @@ class User extends Component {
           updateOrigin={this.updateOrigin.bind(this)}
           updateDestination={this.updateDestination.bind(this)}
         />
-        <button>Book Ride</button>
+        <button>Find Ride</button>
         <Map
-          origin={this.state.origin}
-          destination={this.state.destination}
+          origin={this.state.origin.latLng}
+          destination={this.state.destination.latLng}
           userPos={this.state.userPos}
           drivers={this.state.drivers} />
       </Fragment>
