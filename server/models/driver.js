@@ -14,4 +14,6 @@ const driverSchema = mongoose.Schema({
   currentRide: {type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}
 })
 
+driverSchema.index({location: '2dsphere'})
+
 module.exports = mongoose.model('Driver', driverSchema)

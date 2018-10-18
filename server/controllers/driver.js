@@ -26,6 +26,7 @@ exports.updateDriver = (req, res) => {
 }
 
 exports.findDrivers = (req, res) => {
+  console.log('USERLOC', req.body.userLoc)
   Drivers.find({
     location: {
       $nearSphere: {
