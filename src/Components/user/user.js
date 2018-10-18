@@ -22,11 +22,13 @@ class User extends Component {
   geoSuccess (position) {
     this.setState({userPos: {lat: position.coords.latitude, lng: position.coords.longitude}})
   }
-  updateOriginCoordinates (lat, lng) {
-    this.setState({origin: {lat: lat, lng: lng}})
+  updateOrigin (obj) {
+    this.setState({origin: obj})
+    console.log('Origin Updated!! >>', this.state)
   }
-  updateDestinationCoordinates (lat, lng) {
-    this.setState({destination: {lat: lat, lng: lng}})
+  updateDestination (obj) {
+    this.setState({destination: obj})
+    console.log('Destination Updated!! >>', this.state)
   }
 
   // ---- Lifecycle Hooks ----
@@ -40,8 +42,8 @@ class User extends Component {
     return (
       <Fragment>
         <InputBoxes
-          updateOriginCoordinates={this.updateOriginCoordinates.bind(this)}
-          updateDestinationCoordinates={this.updateDestinationCoordinates.bind(this)}
+          updateOrigin={this.updateOrigin.bind(this)}
+          updateDestination={this.updateDestination.bind(this)}
         />
         <button>Book Ride</button>
         <Map
