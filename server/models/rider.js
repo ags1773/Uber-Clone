@@ -11,4 +11,4 @@ const rider = mongoose.Schema({
   }
 })
 
-module.exports = mongoose.Model('Rider', rider)
+module.exports = mongoose.model('Rider', rider)

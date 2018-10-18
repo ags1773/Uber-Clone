@@ -14,4 +14,4 @@ const driverSchema = mongoose.Schema({
   currentRide: {type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}
 })
 
-module.exports = mongoose.Model('Driver', driverSchema)
+module.exports = mongoose.model('Driver', driverSchema)

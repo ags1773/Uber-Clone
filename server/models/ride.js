@@ -13,4 +13,4 @@ const rideSchema = mongoose.Schema({
   status: String
 })
 
-module.exports = mongoose.Model('Ride', rideSchema)
+module.exports = mongoose.model('Ride', rideSchema)
