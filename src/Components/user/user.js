@@ -15,7 +15,7 @@ class User extends Component {
     this.state = {
       origin: {},
       destination: {},
-      userPos: {}
+      userPos: {lat: 12.9716, lng: 77.5946}
     }
   }
   // ---- Functions ----
@@ -43,6 +43,7 @@ class User extends Component {
           updateOriginCoordinates={this.updateOriginCoordinates.bind(this)}
           updateDestinationCoordinates={this.updateDestinationCoordinates.bind(this)}
         />
+        <button>Book Ride</button>
         <Map
           origin={this.state.origin}
           destination={this.state.destination}
