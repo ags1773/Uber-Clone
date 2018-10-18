@@ -1,9 +1,8 @@
-import React, {Component, Fragment} from 'react'
-import {Route, Link, Switch} from 'react-router-dom'
-import InputBoxes from './inputBoxes'
-import Map from './map'
+import React, {Component} from 'react'
+import {Route} from 'react-router-dom'
 import HomeComponent from './homeComponent/homeComponent'
-import Test from './test'
+import User from './user/user'
+import Driver from './driver/driver'
 
 let watchId
 let options = {
@@ -46,28 +45,12 @@ class Main extends Component {
   render () {
     return (
       <div>
-        <ul>
-          <li><Link to='/user'>User</Link></li>
-          <li><Link to='/test'>Test</Link></li>
-        </ul>
-        <Route path='/user' component={HomeComponent} />
-        <Route path='/test' component={Test} />
+        <Route exact path='/' component={HomeComponent} />
+        <Route path='/user' component={User} />
+        <Route path='/driver' component={Driver} />
       </div>
     )
   }
 }
 
 export default Main
-
-
-{/* <Route path='/test' render={() => {
-  return (
-    <Fragment>
-      <InputBoxes
-        updateOriginCoordinates={this.updateOriginCoordinates.bind(this)}
-        updateDestinationCoordinates={this.updateDestinationCoordinates.bind(this)}
-      />
-      <Map origin={this.state.origin} destination={this.state.destination} userPos={this.state.userPos} />
-    </Fragment>
-  )
-}} /> */}
