@@ -15,7 +15,8 @@ class User extends Component {
     this.state = {
       origin: {},
       destination: {},
-      userPos: {lat: 12.9716, lng: 77.5946}
+      userPos: {lat: 12.9716, lng: 77.5946},
+      drivers: []
     }
   }
   // ---- Functions ----
@@ -36,6 +37,28 @@ class User extends Component {
   componentWillUnmount () {
     navigator.geolocation.clearWatch(watchId)
   }
+  componentDidMount () {
+    let data = {
+      'userLoc': [this.state.userPos.lng, this.state.userPos.lat]
+    }
+    let myInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }
+    fetch('/api/driver/find', myInit)
+      .then(result => {
+        return result.json()
+      })
+      .then(drivers => {
+        this.setState({drivers: drivers})
+      })
+      .catch(err => {
+        console.log(err.json())
+      })
+  }
   render () {
     return (
       <Fragment>
@@ -47,7 +70,8 @@ class User extends Component {
         <Map
           origin={this.state.origin}
           destination={this.state.destination}
-          userPos={this.state.userPos} />
+          userPos={this.state.userPos}
+          drivers={this.state.drivers} />
       </Fragment>
     )
   }

@@ -5,7 +5,10 @@ const Dotenv = require('dotenv-webpack')
 module.exports = {
   devtool: 'inline-source-map',
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    proxy: {
+      '/api': 'http://localhost:8000'
+    }
   },
   module: {
     rules: [

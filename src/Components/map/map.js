@@ -15,6 +15,7 @@ class Map extends Component {
   }
 
   componentWillUpdate () {
+    //display travel route
     if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
       directionsDisplay.setMap(map)
       directionsService.route({
@@ -29,9 +30,24 @@ class Map extends Component {
         }
       })
     }
+    //display user position
     map.setCenter(this.props.userPos)
     marker.setMap(map)
     marker.setPosition(this.props.userPos)
+    //display drivers near user
+    if (this.props.drivers.length !== 0) {
+      let drivers = this.props.drivers
+      drivers.forEach(d => {
+        let m = new google.maps.Marker({
+          position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
+          map: map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 5
+          }
+        })
+      })
+    }
   }
 
   isEmpty (obj) {
