@@ -33,7 +33,10 @@ class Navbar extends Component {
             </a>
           </div>
           <div className='navbar-end'>
-            <div className='navbar-item'>
+            <p className='navbar-item'>
+              User | Signed in as: ---
+            </p>
+            {/* <div className='navbar-item'> 
               <div className='buttons'>
                 <a className='button is-dark'>
                   <strong>Sign up</strong>
@@ -42,7 +45,7 @@ class Navbar extends Component {
                   Log in
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>
