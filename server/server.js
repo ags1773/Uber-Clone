@@ -9,6 +9,7 @@ const mongoose = require('mongoose')
 
 const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
+const rideRoutes = require('./routes/ride')
 
 app.listen(port)
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json())
 
 app.use('/api/rider', userRoutes)
 app.use('/api/driver', driverRoutes)
+app.use('/api/ride', rideRoutes)
 
 app.use((req, res, next) => {
   let error = new Error('Not found')
