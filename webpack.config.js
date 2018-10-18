@@ -4,6 +4,9 @@ const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   devtool: 'inline-source-map',
+  devServer: {
+    historyApiFallback: true
+  },
   module: {
     rules: [
       {
