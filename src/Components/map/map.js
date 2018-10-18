@@ -29,9 +29,11 @@ class Map extends Component {
         }
       })
     }
-    map.setCenter(this.props.userPos)
-    marker.setMap(map)
-    marker.setPosition(this.props.userPos)
+    if (this.props.userPos) {
+      map.setCenter(this.props.userPos)
+      marker.setMap(map)
+      marker.setPosition(this.props.userPos)
+    }
   }
 
   isEmpty (obj) {

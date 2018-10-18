@@ -20,8 +20,8 @@ class inputBoxes extends Component {
   render () {
     return (
       <Fragment>
-        <input type='text' id='originInput' />
-        <input type='text' id='destinationInput' />
+        <input type='text' id='originInput' placeholder='Origin' />
+        <input type='text' id='destinationInput' placeholder='Destination' />
       </Fragment>
     )
   }
