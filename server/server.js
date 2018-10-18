@@ -7,7 +7,7 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-const riderRoutes = require('./routes/rider')
+const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
 
 app.listen(port)
@@ -17,7 +17,7 @@ mongoose.connect(`mongodb+srv://uber:${process.env.mongoPwd}@cluster0-reuoy.mong
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 
-app.use('/api/rider', riderRoutes)
+app.use('/api/rider', userRoutes)
 app.use('/api/driver', driverRoutes)
 
 app.use((req, res, next) => {

@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const Riders = require('../models/rider')
+const Users = require('../models/user')
 
 exports.createRider = (req, res) => {
-  let newRider = new Riders({
+  let newRider = new Users({
     _id: new mongoose.Types.ObjectId(),
     ...req.body
   })

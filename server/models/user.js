@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const rider = mongoose.Schema({
+const user = mongoose.Schema({
   _id: mongoose.SchemaTypes.ObjectId,
   name: String,
   pastRides: [{type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}],
@@ -11,4 +11,4 @@ const rider = mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Rider', rider)
+module.exports = mongoose.model('User', user)
