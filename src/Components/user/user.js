@@ -65,6 +65,29 @@ class User extends Component {
         console.log(err.json())
       })
   }
+
+  findRide () {
+    let data = {
+      origin: this.state.origin.address,
+      destination: this.state.destination.address,
+      user: 'abc'
+    }
+    let myInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }
+    fetch('/api/ride', myInit)
+      .then(result => {
+        console.log(result)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   render () {
     return (
       <Fragment>
@@ -72,7 +95,7 @@ class User extends Component {
           updateOrigin={this.updateOrigin.bind(this)}
           updateDestination={this.updateDestination.bind(this)}
         />
-        <button>Find Ride</button>
+        <button onCLick={this.findRide.bind(this)}>Find Ride</button>
         <Map
           origin={this.state.origin.latLng}
           destination={this.state.destination.latLng}
