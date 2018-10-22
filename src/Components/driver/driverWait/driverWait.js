@@ -30,7 +30,7 @@ function intervalFunction () {
   getCurrLocation()
     .then(pos => {
       let crd = pos.coords
-      console.log('lat, long, acc >>', crd.latitude, crd.longitude, crd.accuracy)
+      console.log('Driver lat, long, accuracy >>', crd.latitude, crd.longitude, crd.accuracy)
       if (crd.accuracy <= config.driverMinAccuracy) {
         if (this.prevLat && this.prevLng) { // ignores the 1st reading
           if (geodesicInMtrs(this.prevLat, this.prevLng, crd.latitude, crd.longitude) > config.driverMinDist) {
@@ -46,7 +46,7 @@ function intervalFunction () {
         this.prevLng = crd.longitude
       } else console.log(`Driver's location inaccurate... Accuracy = ${crd.accuracy}, threshold = ${config.driverMinAccuracy}`)
     })
-    .catch(e => console.log(e))
+    .catch(e => console.log('Error getting driver location ', e))
 }
 function transmitDriverLocToServer (lat, lng) { // this function is mostly wrong
   let data = {
@@ -70,6 +70,7 @@ class DriverWait extends Component {
     this.setId = setInterval(intervalFunction.bind(this), config.driverCoordBroadcastTimeout * 1000)
     this.prevLat = 0
     this.prevLng = 0
+    console.log('PrOps>>>> ', this.props)
   }
   componentWillUnmount () {
     clearInterval(this.setId)

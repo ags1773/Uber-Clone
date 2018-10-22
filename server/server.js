@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT
 
+const path = require('path')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -15,6 +16,7 @@ app.listen(port)
 
 mongoose.connect(`mongodb+srv://uber:${process.env.mongoPwd}@cluster0-reuoy.mongodb.net/test?retryWrites=true`, { useNewUrlParser: true })
 
+app.use(express.static(path.join(__dirname, '..', 'dist')))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 
