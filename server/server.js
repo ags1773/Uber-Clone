@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT
 
+require('./passport-config')
 const path = require('path')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -14,13 +15,13 @@ const rideRoutes = require('./routes/ride')
 
 app.listen(port)
 
-mongoose.connect(`mongodb+srv://uber:${process.env.mongoPwd}@cluster0-reuoy.mongodb.net/test?retryWrites=true`, { useNewUrlParser: true })
+mongoose.connect(`${process.env.dbURI}`, { useNewUrlParser: true })
 
 app.use(express.static(path.join(__dirname, '..', 'dist')))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 
-app.use('/api/rider', userRoutes)
+app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)
 
