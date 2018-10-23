@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './driverWait.css'
 import config from '../../../config'
+let socket
 
 function geodesicInMtrs (lat1, lon1, lat2, lon2) {
   var R = 6371000
@@ -31,46 +32,34 @@ function intervalFunction () {
     .then(pos => {
       let crd = pos.coords
       console.log('Driver lat, long, accuracy >>', crd.latitude, crd.longitude, crd.accuracy)
+      transmitDriverLocToServer(crd.latitude, crd.longitude) // for testing.. delete later
       if (crd.accuracy <= config.driverMinAccuracy) {
-        if (this.prevLat && this.prevLng) { // ignores the 1st reading
-          if (geodesicInMtrs(this.prevLat, this.prevLng, crd.latitude, crd.longitude) > config.driverMinDist) {
-            console.log(`Driver moving.. transmitting location to server`)
-            transmitDriverLocToServer(crd.latitude, crd.longitude)
-          } else {
-            console.log(`Driver hasn't moved more than ${config.driverMinDist} mtr... Did NOT transmit location to server`)
-          }
-        } else {
-          console.log('Ignoring 1st reading...')
-        }
-        this.prevLat = crd.latitude
-        this.prevLng = crd.longitude
+        // if (this.prevLat && this.prevLng) { // ignores the 1st reading
+        //   if (geodesicInMtrs(this.prevLat, this.prevLng, crd.latitude, crd.longitude) > config.driverMinDist) {
+        //     console.log(`Driver moving.. transmitting location to server`)
+        //     transmitDriverLocToServer(crd.latitude, crd.longitude)
+        //   } else {
+        //     console.log(`Driver hasn't moved more than ${config.driverMinDist} mtr... Did NOT transmit location to server`)
+        //   }
+        // } else {
+        //   console.log('Ignoring 1st reading...')
+        // }
+        // this.prevLat = crd.latitude
+        // this.prevLng = crd.longitude
       } else console.log(`Driver's location inaccurate... Accuracy = ${crd.accuracy}, threshold = ${config.driverMinAccuracy}`)
     })
     .catch(e => console.log('Error getting driver location ', e))
 }
-function transmitDriverLocToServer (lat, lng) { // this function is mostly wrong
-  let data = {
-    'driverLoc': [lng, lat]
-  }
-  let myInit = {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  }
-  fetch('/api/driver/1234', myInit) // mock ID given for now
-    .then(result => result.json())
-    .then(() => console.log('Driver location successfully sent to server'))
-    .catch(err => console.log(err.json()))
+function transmitDriverLocToServer (lat, lng) {
+  socket.emit('driverPosition', JSON.stringify([lat, lng]))
 }
 
 class DriverWait extends Component {
   componentWillMount () {
+    socket = this.props.socket
     this.setId = setInterval(intervalFunction.bind(this), config.driverCoordBroadcastTimeout * 1000)
     this.prevLat = 0
     this.prevLng = 0
-    console.log('PrOps>>>> ', this.props)
   }
   componentWillUnmount () {
     clearInterval(this.setId)
