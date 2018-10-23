@@ -4,6 +4,8 @@ const app = express()
 const port = process.env.PORT
 
 require('./passport-config')
+const cookieSession = require('cookie-session')
+const passport = require('passport')
 const path = require('path')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -17,6 +19,13 @@ app.listen(port)
 
 mongoose.connect(`${process.env.dbURI}`, { useNewUrlParser: true })
 
+app.use(cookieSession({
+  maxAge: 24 * 60 * 60 * 1000,
+  keys: process.env.cookieKey
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.static(path.join(__dirname, '..', 'dist')))
 app.use(morgan('dev'))
 app.use(bodyParser.json())

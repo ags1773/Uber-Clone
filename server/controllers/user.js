@@ -8,4 +8,6 @@ exports.logout = (req, res) => {
   res.send('Logging out!')
 }
 
-exports.redirectUser = passport.authenticate('google')
+exports.redirectUser = (passport.authenticate('google'), (req, res) => {
+  res.redirect('/')
+})
