@@ -5,9 +5,9 @@ function DriverRequested (props) {
   return (
     <div className='container' id='driverRequested'>
       <p className='is-size-3 has-text-centered is-uppercase'>Ride request received!</p>
-      <p>Name: {props.userDetails.name}</p>
-      <p>Origin: {props.userDetails.origin.address}</p>
-      <p>Destination: {props.userDetails.destination.address}</p>
+      <p><strong>Name:</strong> {props.userDetails.name}</p>
+      <p><strong>Origin:</strong> {props.userDetails.origin.address}</p>
+      <p><strong>Destination:</strong> {props.userDetails.destination.address}</p>
       <div className='buttons'>
         <button className='button is-dark'>Accept</button>
         <button className='button is-dark'>Decline</button>
