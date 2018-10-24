@@ -9,5 +9,6 @@ exports.logout = (req, res) => {
 }
 
 exports.redirectUser = (passport.authenticate('google'), (req, res) => {
-  res.redirect('/')
+  console.log('USER PASSPORT', req.user)
+  res.send('logged in')
 })
