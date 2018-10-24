@@ -18,8 +18,6 @@ const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
 const rideRoutes = require('./routes/ride')
 
-app.listen(port)
-
 mongoose.connect(`${process.env.dbURI}`, { useNewUrlParser: true })
 
 if (process.env.MODE === 'development') {
