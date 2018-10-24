@@ -8,7 +8,10 @@ module.exports = function (socket) {
     console.log(`Driver ${data.id} has moved to location ${data.position}`)
     DriverModel.updateDriver(data.id,
       {
-        userLoc: [data.position[1], data.position[0]] // query takes position in [longitude, latitude] format
+        location: {
+          type: 'Point',
+          coordinates: [data.position[1], data.position[0]]
+        }
       },
       (err, result) => {
         if (err) console.log('Error while updating driver in DB')
