@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import './driverWait.css'
 import config from '../../../config'
-let socket
+let socket, driverID
 
 function geodesicInMtrs (lat1, lon1, lat2, lon2) {
   var R = 6371000
@@ -51,12 +51,17 @@ function intervalFunction () {
     .catch(e => console.log('Error getting driver location ', e))
 }
 function transmitDriverLocToServer (lat, lng) {
-  socket.emit('driverPosition', JSON.stringify([lat, lng]))
+  const payload = {
+    id: driverID,
+    position: [lat, lng]
+  }
+  socket.emit('driverPosition', JSON.stringify(payload))
 }
 
 class DriverWait extends Component {
   componentWillMount () {
     socket = this.props.socket
+    driverID = this.props.driverID
     this.setId = setInterval(intervalFunction.bind(this), config.driverCoordBroadcastTimeout * 1000)
     this.prevLat = 0
     this.prevLng = 0
