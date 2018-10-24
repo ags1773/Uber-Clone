@@ -8,6 +8,7 @@ passport.serializeUser((user, done) => {
 })
 
 passport.deserializeUser((id, done) => {
+  console.log('DESERIALIZE', id)
   Users.findById({_id: id})
     .then(user => {
       done(null, user)
@@ -19,6 +20,7 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.googleClientSecret,
   callbackURL: '/api/user/login/redirect'
 }, (accessToken, refreshToken, profile, done) => {
+  console.log('GOOGLE PCONF', profile)
   Users.findOne({googleId: profile.id})
     .then(user => {
       if (user) {
@@ -34,5 +36,8 @@ passport.use(new GoogleStrategy({
             done(null, result)
           })
       }
+    })
+    .catch(err => {
+      console.log('ERROR IN PASSPORT CONF', err)
     })
 }))

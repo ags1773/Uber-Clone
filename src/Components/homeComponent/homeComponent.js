@@ -4,7 +4,10 @@ import UserLogin from '../userLogin/userLogin'
 class homeComponent extends Component {
   loginUser () {
     fetch('/api/user/login', {
-      mode: 'no-cors'
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
     })
       .then((result) => {
         console.log('USER RESULT', result)
