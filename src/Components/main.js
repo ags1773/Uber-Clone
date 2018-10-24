@@ -8,6 +8,8 @@ import DriverWait from './driver/driverWait/driverWait'
 
 // Global vars
 let socket
+// let tempDriverID = '5bcfcc921c9d440000ac95a2' // mock...This will come from google redirect
+let tempDriverID = '5bc814bfbc69243ce7e707d3' // mock...This will come from google redirect
 
 class Main extends Component {
   componentWillMount () {
@@ -18,7 +20,7 @@ class Main extends Component {
       <Fragment>
         <Route exact path='/' component={HomeComponent} />
         <Route path='/user' render={(props) => <User {...props} socket={socket} />} />
-        <Route path='/driver' render={(props) => <DriverWait {...props} socket={socket} />} />
+        <Route path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} />} />
       </Fragment>
     )
   }
