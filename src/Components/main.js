@@ -4,6 +4,7 @@ import HomeComponent from './homeComponent/homeComponent'
 import User from './user/user'
 import DriverWait from './driver/driverWait/driverWait'
 import DriverRequested from './driver/driverRequested/driverRequested'
+import DriverMap from './driver/driverMap/driverMap'
 
 // Global vars
 let tempDriverID = '5bc814bfbc69243ce7e707d3' // mock...This will come from google redirect
@@ -13,7 +14,8 @@ class Main extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      rideDetails: {}
+      rideDetails: {},
+      mapRenderData: {}
     }
   }
   componentWillMount () {
@@ -24,13 +26,19 @@ class Main extends Component {
       rideDetails: rideDetails
     }, callback)
   }
+  setMapState (obj, callback) {
+    this.setState({
+      mapRenderData: obj
+    }, callback)
+  }
   render () {
     return (
       <Fragment>
         <Route exact path='/' component={HomeComponent} />
         <Route exact path='/user' render={(props) => <User {...props} socket={socket} />} />
         <Route exact path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} setRideDetailsState={this.setRideDetailsState.bind(this)} />} />
-        <Route exact path='/driver/driverRequested' render={props => <DriverRequested {...props} userDetails={this.state.rideDetails} />} />
+        <Route path='/driver/driverRequested' render={props => <DriverRequested {...props} socket={socket} userDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} />} />
+        <Route path='/driver/map' render={props => <DriverMap {...props} mapRenderData={this.state.mapRenderData} />} />
       </Fragment>
     )
   }
