@@ -13,29 +13,24 @@ class Main extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      rideAssigned: false,
       rideDetails: {}
     }
   }
   componentWillMount () {
     socket = this.props.socket
   }
-  componentDidMount () {
-    console.log('PROPS>>>', this.props)
-    socket.on('rideAssigned', rideDetails => {
-      this.setState({
-        rideAssigned: true,
-        rideDetails: rideDetails
-      })
-    })
+  setRideDetailsState (rideDetails, callback) {
+    this.setState({
+      rideDetails: rideDetails
+    }, callback)
   }
   render () {
     return (
       <Fragment>
         <Route exact path='/' component={HomeComponent} />
         <Route exact path='/user' render={(props) => <User {...props} socket={socket} />} />
-        <Route exact path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} />} />
-        <Route path='/driver/driverRequested' render={props => <DriverRequested {...props} userDetails={this.state.rideDetails} />} />
+        <Route exact path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} setRideDetailsState={this.setRideDetailsState.bind(this)} />} />
+        <Route exact path='/driver/driverRequested' render={props => <DriverRequested {...props} userDetails={this.state.rideDetails} />} />
       </Fragment>
     )
   }
