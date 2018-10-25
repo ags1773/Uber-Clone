@@ -59,13 +59,13 @@ function transmitDriverLocToServer (lat, lng) {
 }
 
 class DriverWait extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      rideAssigned: false,
-      rideDetails: {}
-    }
-  }
+  // constructor (props) {
+  //   super(props)
+  //   this.state = {
+  //     rideAssigned: false,
+  //     rideDetails: {}
+  //   }
+  // }
   componentWillMount () {
     socket = this.props.socket
     driverID = this.props.driverID
@@ -77,36 +77,46 @@ class DriverWait extends Component {
     document.getElementById('EmitRideAssigned').addEventListener('click', // for testing purpose
       () => socket.emit('EmitRideAssigned')
     )
-    socket.on('rideAssigned', (rideDetails) => {
-      clearInterval(this.setId)
-      this.setState({
-        rideAssigned: true,
-        rideDetails: rideDetails
-      })
-    })
+    // socket.on('rideAssigned', (rideDetails) => {
+    //   clearInterval(this.setId)
+    //   this.setState({
+    //     rideAssigned: true,
+    //     rideDetails: rideDetails
+    //   })
+    // })
   }
-  // componentWillUnmount () {
-  //   clearInterval(this.setId)
-  // }
+  componentWillUnmount () {
+    clearInterval(this.setId)
+  }
   render () {
-    if (!this.state.rideAssigned) {
-      return (
-        <div className='container' id='driverWait' >
-          <div><button id='EmitRideAssigned'>Simulate ride assignment</button></div>
-          <p className='is-size-3 has-text-centered has-text-light is-inline-block'>Waiting for ride</p>
-          <div className='lds-ripple'>
-            <div />
-            <div />
-          </div>
+    return (
+      <div className='container' id='driverWait' >
+        <div><button id='EmitRideAssigned'>Simulate ride assignment</button></div>
+        <p className='is-size-3 has-text-centered has-text-light is-inline-block'>Waiting for ride</p>
+        <div className='lds-ripple'>
+          <div />
+          <div />
         </div>
-      )
-    } else if (this.state.rideAssigned) {
-      return (
-        <Fragment>
-          <DriverRequested userDetails={this.state.rideDetails} />
-        </Fragment>
-      )
-    }
+      </div>
+    )
+    // if (!this.state.rideAssigned) {
+    //   return (
+    //     <div className='container' id='driverWait' >
+    //       <div><button id='EmitRideAssigned'>Simulate ride assignment</button></div>
+    //       <p className='is-size-3 has-text-centered has-text-light is-inline-block'>Waiting for ride</p>
+    //       <div className='lds-ripple'>
+    //         <div />
+    //         <div />
+    //       </div>
+    //     </div>
+    //   )
+    // } else if (this.state.rideAssigned) {
+    //   return (
+    //     <Fragment>
+    //       <DriverRequested userDetails={this.state.rideDetails} />
+    //     </Fragment>
+    //   )
+    // }
   }
 }
 

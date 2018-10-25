@@ -1,4 +1,6 @@
 import React, {Component, Fragment} from 'react'
+import client from 'socket.io-client'
+import config from '../config'
 import NavBar from './navBar/navBar'
 import Main from './main'
 
@@ -17,12 +19,18 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-      scriptLoaded: false
+      scriptLoaded: false,
+      socket: undefined
     }
   }
   componentWillMount () {
     loadScript(script)
-      .then(() => this.setState({scriptLoaded: true}))
+      .then(() => {
+        this.setState({
+          scriptLoaded: true,
+          socket: client(config.server) // creates socket
+        })
+      })
       .catch(e => console.log(e))
   }
 
@@ -31,7 +39,7 @@ class App extends Component {
       return (
         <Fragment>
           <NavBar />
-          <Main />
+          <Main socket={this.state.socket} />
         </Fragment>
       )
     } else {

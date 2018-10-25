@@ -1,19 +1,34 @@
-import React from 'react'
+import React, {Component, Fragment} from 'react'
 import './driverRequested.css'
 
-function DriverRequested (props) {
-  return (
-    <div className='container' id='driverRequested'>
-      <p className='is-size-3 has-text-centered is-uppercase'>Ride request received!</p>
-      <p><strong>Name:</strong> {props.userDetails.name}</p>
-      <p><strong>Origin:</strong> {props.userDetails.origin.address}</p>
-      <p><strong>Destination:</strong> {props.userDetails.destination.address}</p>
-      <div className='buttons'>
-        <button className='button is-dark'>Accept</button>
-        <button className='button is-dark'>Decline</button>
+class DriverRequested extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      rideAccepted: false,
+      rideDeclined: false
+    }
+  }
+  acceptRide () {
+    this.setState({rideAccepted: true})
+  }
+  declineRide () {
+    this.setState({rideDeclined: true})
+  }
+  render () {
+    return (
+      <div className='container' id='driverRequested'>
+        <p className='is-size-3 has-text-centered is-uppercase'>Ride request received!</p>
+        <p><strong>Name:</strong> {this.props.userDetails.name}</p>
+        <p><strong>Origin:</strong> {this.props.userDetails.origin.address}</p>
+        <p><strong>Destination:</strong> {this.props.userDetails.destination.address}</p>
+        <div className='buttons'>
+          <button className='button is-dark' onClick={this.acceptRide}>Accept</button>
+          <button className='button is-dark' onClick={this.declineRide}>Decline</button>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default DriverRequested
