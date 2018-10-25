@@ -2,10 +2,10 @@ const DriverModel = require('./models/driver')
 
 module.exports = function (socket) {
   // Listeners
-  socket.on('disconnect', () => console.log('client disconnected...'))
+  socket.on('disconnect', () => console.log('[server] client disconnected...'))
   socket.on('driverPosition', (json) => { // fired when driver is moving
     const data = JSON.parse(json)
-    console.log(`Driver ${data.id} has moved to location ${data.position}`)
+    console.log(`[server] Driver ${data.id} has moved to location ${data.position}`)
     DriverModel.updateDriver(data.id,
       {
         location: {
@@ -14,10 +14,11 @@ module.exports = function (socket) {
         }
       },
       (err, result) => {
-        if (err) console.log('Error while updating driver in DB')
-        else console.log('Driver position updated successfully in DB!')
+        if (err) console.log('[server] Error while updating driver in DB')
+        else console.log('[server] Driver position updated successfully in DB!')
       })
   })
+  socket.on('rideDeclined', () => console.log('[server] driver has declined the ride'))
 
   // Emitters
 

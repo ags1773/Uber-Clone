@@ -5,6 +5,7 @@ let map, marker, directionsService, directionsDisplay
 
 class Map extends Component {
   componentDidMount () {
+    console.log('props >>', this.props)
     map = new google.maps.Map(document.getElementById('map'), {
       center: this.props.userPos,
       zoom: 15

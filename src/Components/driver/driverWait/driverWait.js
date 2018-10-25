@@ -1,33 +1,9 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import './driverWait.css'
 import config from '../../../config'
-import DriverRequested from '../driverRequested/driverRequested'
+import {geodesicInMtrs, getCurrLocation} from '../../../helperFunctions'
 let socket, driverID
 
-function geodesicInMtrs (lat1, lon1, lat2, lon2) {
-  var R = 6371000
-  var dLat = deg2rad(lat2 - lat1)
-  var dLon = deg2rad(lon2 - lon1)
-  var a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2)
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  var d = R * c // Distance in m
-  return d
-}
-function deg2rad (deg) {
-  return deg * (Math.PI / 180)
-}
-function getCurrLocation () {
-  const options = {
-    enableHighAccuracy: true,
-    timeout: config.driverGpsTimeout * 1000
-  }
-  return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options)
-  })
-}
 function intervalFunction () {
   getCurrLocation()
     .then(pos => {
@@ -59,13 +35,6 @@ function transmitDriverLocToServer (lat, lng) {
 }
 
 class DriverWait extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      rideAssigned: false,
-      rideDetails: {}
-    }
-  }
   componentWillMount () {
     socket = this.props.socket
     driverID = this.props.driverID
@@ -77,36 +46,24 @@ class DriverWait extends Component {
     document.getElementById('EmitRideAssigned').addEventListener('click', // for testing purpose
       () => socket.emit('EmitRideAssigned')
     )
-    socket.on('rideAssigned', (rideDetails) => {
-      clearInterval(this.setId)
-      this.setState({
-        rideAssigned: true,
-        rideDetails: rideDetails
-      })
+    socket.on('rideAssigned', rideDetails => { // sets state in main component and redirects once done
+      this.props.setRideDetailsState(rideDetails, () => this.props.history.push('/driver/driverRequested'))
     })
   }
-  // componentWillUnmount () {
-  //   clearInterval(this.setId)
-  // }
+  componentWillUnmount () {
+    clearInterval(this.setId)
+  }
   render () {
-    if (!this.state.rideAssigned) {
-      return (
-        <div className='container' id='driverWait' >
-          <div><button id='EmitRideAssigned'>Simulate ride assignment</button></div>
-          <p className='is-size-3 has-text-centered has-text-light is-inline-block'>Waiting for ride</p>
-          <div className='lds-ripple'>
-            <div />
-            <div />
-          </div>
+    return (
+      <div className='container' id='driverWait' >
+        <div><button id='EmitRideAssigned'>Simulate ride assignment</button></div>
+        <p className='is-size-3 has-text-centered has-text-light is-inline-block'>Waiting for ride</p>
+        <div className='lds-ripple'>
+          <div />
+          <div />
         </div>
-      )
-    } else if (this.state.rideAssigned) {
-      return (
-        <Fragment>
-          <DriverRequested userDetails={this.state.rideDetails} />
-        </Fragment>
-      )
-    }
+      </div>
+    )
   }
 }
 
