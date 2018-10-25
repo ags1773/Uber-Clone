@@ -17,7 +17,8 @@ class Main extends Component {
   render () {
     return (
       <Fragment>
-        <Route exact path='/' component={HomeComponent} />
+        {/* <Route exact path='/' component={HomeComponent} /> */}
+        <Route exact path='/' render={props => <HomeComponent {...props} />} />
         <Route path='/user' render={(props) => <User {...props} socket={socket} />} />
         <Route path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} />} />
       </Fragment>
