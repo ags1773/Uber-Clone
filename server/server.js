@@ -11,7 +11,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const socketioCb = require('./socketioCb')
 
-// const userRoutes = require('./routes/user')
+const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
 const rideRoutes = require('./routes/ride')
 
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, '..', 'dist')))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 
-// app.use('/api/user', userRoutes)
+app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)
 // save socket for each user/driver in DB, delete it on disconnect
