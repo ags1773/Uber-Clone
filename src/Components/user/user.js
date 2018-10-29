@@ -3,6 +3,7 @@ import InputBoxes from '../inputBoxes'
 import Map from '../map/map'
 
 let watchId
+let socket, userID
 let options = {
   enableHighAccuracy: true
 }
@@ -10,8 +11,8 @@ let geoError = () => {
   console.log('No position available')
 }
 class User extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       origin: {
         latLng: {},
@@ -24,6 +25,9 @@ class User extends Component {
       userPos: {lat: 12.9716, lng: 77.5946},
       drivers: []
     }
+    socket = this.props.socket
+    userID = this.props.userID
+    socket.emit('userType', 'user', userID)
   }
   // ---- Functions ----
   geoSuccess (position) {

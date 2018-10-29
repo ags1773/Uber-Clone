@@ -1,4 +1,3 @@
-// const mongoose = require('mongoose')
 const Drivers = require('../models/driver')
 
 exports.createDriver = (req, res) => {
@@ -6,17 +5,6 @@ exports.createDriver = (req, res) => {
     .then(created => Drivers.saveDriver(created))
     .then(result => res.status(200).json(result))
     .catch(err => res.status(500).json(err))
-  // let newDriver = new Drivers({
-  //   _id: new mongoose.Types.ObjectId(),
-  //   ...req.body
-  // })
-  // newDriver.save()
-  //   .then(result => {
-  //     res.status(200).json(result)
-  //   })
-  //   .catch(err => {
-  //     res.status(500).json(err)
-  //   })
 }
 
 exports.updateDriver = (req, res) => {
@@ -37,11 +25,11 @@ exports.deleteDriver = (req, res) => {
   Drivers.deleteDriver(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(err => res.status(500).json(err))
-  // Drivers.remove({_id: req.params.id})
-  //   .then(result => {
-  //     res.status(200).json(result)
-  //   })
-  //   .catch(e => {
-  //     res.status(500).json(e)
-  //   })
+}
+
+exports.findDriver = (req, res) => {
+  Drivers.findDriver(req.params.id, (err, found) => {
+    if (err) res.status(500).json(err)
+    else res.status(200).json(found)
+  })
 }

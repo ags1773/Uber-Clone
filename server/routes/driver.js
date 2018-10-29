@@ -6,5 +6,6 @@ router.post('/', driverController.createDriver)
 router.patch('/:id', driverController.updateDriver)
 router.delete('/:id', driverController.deleteDriver)
 router.post('/find', driverController.findDrivers)
+router.get('/:id', driverController.findDriver)
 
 module.exports = router

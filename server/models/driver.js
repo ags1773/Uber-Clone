@@ -38,3 +38,4 @@ exports.updateDriver = (id, updateObj, callback) => {
   Model.findOneAndUpdate(id, {$set: updateObj}, callback)
 }
 exports.deleteDriver = id => Model.remove({_id: id})
+exports.findDriver = (id, callback) => Model.findById(id, callback)
