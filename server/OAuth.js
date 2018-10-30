@@ -6,6 +6,12 @@ const oauth2UserClient = new google.auth.OAuth2(
   'http://localhost:8000/api/user/oauthCb'
 )
 
+const oauth2DriverClient = new google.auth.OAuth2(
+  process.env.googleClientId,
+  process.env.googleClientSecret,
+  'http://localhost:8000/api/driver/oauthCb'
+)
+
 const scopes = [
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/userinfo.profile'
@@ -16,13 +22,26 @@ const userLoginUrl = oauth2UserClient.generateAuthUrl({
   scope: scopes
 })
 
+const driverLoginUrl = oauth2DriverClient.generateAuthUrl({
+  access_type: 'offline',
+  scope: scopes
+})
+
 const oauth2User = google.oauth2({
   version: 'v2',
   auth: oauth2UserClient
 })
 
+const oauth2Driver = google.oauth2({
+  version: 'v2',
+  auth: oauth2DriverClient
+})
+
 module.exports = {
   userLoginUrl,
   oauth2UserClient,
-  oauth2User
+  oauth2User,
+  driverLoginUrl,
+  oauth2DriverClient,
+  oauth2Driver
 }
