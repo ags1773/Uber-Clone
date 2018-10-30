@@ -4,9 +4,16 @@ import './map.css'
 let map, marker, directionsService, directionsDisplay
 
 class Map extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      origin: this.props.origin,
+      destination: this.props.destination
+    }
+  }
   componentDidMount () {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: this.props.userPos,
+      center: this.props.origin,
       zoom: 15
     })
     marker = new google.maps.Marker()
@@ -14,17 +21,22 @@ class Map extends Component {
     directionsDisplay = new google.maps.DirectionsRenderer()
   }
 
-  componentWillUpdate () {
+  componentWillReceiveProps (props) {
     // display travel route
     // if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
-    console.log('Map props >>', this.props)
-    if (this.isValid(this.props.origin) && this.isValid(this.props.destination)) {
-      console.log('MAP props >>>', this.props)
+    console.log('$$$ >>', props)
+    this.setState({
+      origin: props.origin,
+      destination: props.destination
+    })
+    map.setCenter(props.origin)
+    console.log('Map props >>', props)
+    if (this.isValid(this.state.origin) && this.isValid(this.state.destination)) {
       directionsDisplay.setMap(map)
       directionsService.route({
         // origin: this.props.origin,
-        origin: {lat: this.props.origin.lat, lng: this.props.origin.lng},
-        destination: {lat: this.props.destination.lat, lng: this.props.destination.lng},
+        origin: {lat: this.state.origin.lat, lng: this.state.origin.lng},
+        destination: {lat: this.state.destination.lat, lng: this.state.destination.lng},
         travelMode: 'DRIVING'
       }, function (response, status) {
         if (status === 'OK') {
@@ -36,22 +48,22 @@ class Map extends Component {
     }
     // display user position
     // map.setCenter(this.props.userPos) // centers map to user position
-    marker.setMap(map)
-    marker.setPosition(this.props.userPos)
+    // marker.setMap(map)
+    // marker.setPosition(this.props.userPos)
     // display drivers near user
-    if (this.props.drivers.length !== 0) {
-      let drivers = this.props.drivers
-      drivers.forEach(d => {
-        let m = new google.maps.Marker({
-          position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
-          map: map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 5
-          }
-        })
-      })
-    }
+    // if (this.props.drivers.length !== 0) {
+    //   let drivers = this.props.drivers
+    //   drivers.forEach(d => {
+    //     let m = new google.maps.Marker({
+    //       position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
+    //       map: map,
+    //       icon: {
+    //         path: google.maps.SymbolPath.CIRCLE,
+    //         scale: 5
+    //       }
+    //     })
+    //   })
+    // }
   }
 
   isValid (obj) {

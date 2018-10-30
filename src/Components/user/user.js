@@ -40,18 +40,11 @@ class User extends Component {
     this.setState({userPos: {lat: position.coords.latitude, lng: position.coords.longitude}})
   }
   updateOriginDestination (obj) {
-    console.log('UPDATE origin destination ran')
-    let newOrigin = Object.assign({}, obj.origin)
-    let newDestination = Object.assign({}, obj.destination)
-    console.log('ORIGIN', newOrigin)
+    console.log('UPDATE origin destination ran', obj)
     this.setState({
-      origin: newOrigin,
-      destination: newDestination
-    })
-  }
-
-  componentWillUpdate () {
-    console.log('STATE IN USER ', this.state)
+      origin: obj.origin,
+      destination: obj.destination
+    }, () => { console.log('Updated State >>', this.state) })
   }
 
   // ---- Lifecycle Hooks ----
