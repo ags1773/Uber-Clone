@@ -14,6 +14,7 @@ class homeComponent extends Component {
         return result.json()
       })
       .then(result => {
+        console.log(result)
         this.setState({url: result.url})
       })
   }

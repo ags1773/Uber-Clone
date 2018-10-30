@@ -16,7 +16,13 @@ const loginUrl = oauth2Client.generateAuthUrl({
   scope: scopes
 })
 
+const oauth2 = google.oauth2({
+  version: 'v2',
+  auth: oauth2Client
+})
+
 module.exports = {
   loginUrl,
-  oauth2Client
+  oauth2Client,
+  oauth2
 }
