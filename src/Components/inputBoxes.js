@@ -1,9 +1,42 @@
 import React, {Component, Fragment} from 'react'
 
+function isValid (obj) {
+  let flag = false
+  Object.keys(obj).forEach(k => {
+    if (obj[k]) flag = true
+    else flag = false
+  })
+  return flag
+}
 class inputBoxes extends Component {
+  constructor () {
+    super()
+    this.state = {
+      origin: {
+        lat: undefined,
+        lng: undefined,
+        address: ''
+      },
+      destination: {
+        lat: undefined,
+        lng: undefined,
+        address: ''
+      }
+    }
+  }
   componentDidMount () {
     this.autocompleteInput('originInput')
     this.autocompleteInput('destinationInput')
+  }
+
+  updateOriginDestination () {
+    if (isValid(this.state.origin) && isValid(this.state.destination)) {
+      console.log('IN UPDATE FN')
+      this.props.updateOriginDestination({
+        origin: this.state.origin,
+        destination: this.state.destination
+      })
+    }
   }
 
   autocompleteInput (id) {
@@ -13,16 +46,12 @@ class inputBoxes extends Component {
     autocomplete.addListener('place_changed', () => {
       var place = autocomplete.getPlace()
       const obj = {
-        // latLng: {
-        //   lat: place.geometry.location.lat(),
-        //   lng: place.geometry.location.lng()
-        // },
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
         address: place.formatted_address
       }
-      if (id === 'originInput') this.props.updateOrigin(obj)
-      if (id === 'destinationInput') this.props.updateDestination(obj)
+      if (id === 'originInput') this.setState({origin: obj}, this.updateOriginDestination.bind(this))
+      if (id === 'destinationInput') this.setState({destination: obj}, this.updateOriginDestination.bind(this))
     })
   }
 

@@ -5,7 +5,6 @@ let map, marker, directionsService, directionsDisplay
 
 class Map extends Component {
   componentDidMount () {
-    console.log('MAP props >>', this.props)
     map = new google.maps.Map(document.getElementById('map'), {
       center: this.props.userPos,
       zoom: 15
@@ -18,7 +17,9 @@ class Map extends Component {
   componentWillUpdate () {
     // display travel route
     // if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
+    console.log('Map props >>', this.props)
     if (this.isValid(this.props.origin) && this.isValid(this.props.destination)) {
+      console.log('MAP props >>>', this.props)
       directionsDisplay.setMap(map)
       directionsService.route({
         // origin: this.props.origin,

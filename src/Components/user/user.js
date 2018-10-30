@@ -39,11 +39,19 @@ class User extends Component {
   geoSuccess (position) {
     this.setState({userPos: {lat: position.coords.latitude, lng: position.coords.longitude}})
   }
-  updateOrigin (obj) {
-    this.setState({origin: obj})
+  updateOriginDestination (obj) {
+    console.log('UPDATE origin destination ran')
+    let newOrigin = Object.assign({}, obj.origin)
+    let newDestination = Object.assign({}, obj.destination)
+    console.log('ORIGIN', newOrigin)
+    this.setState({
+      origin: newOrigin,
+      destination: newDestination
+    })
   }
-  updateDestination (obj) {
-    this.setState({destination: obj})
+
+  componentWillUpdate () {
+    console.log('STATE IN USER ', this.state)
   }
 
   // ---- Lifecycle Hooks ----
@@ -122,8 +130,7 @@ class User extends Component {
     return (
       <Fragment>
         <InputBoxes
-          updateOrigin={this.updateOrigin.bind(this)}
-          updateDestination={this.updateDestination.bind(this)}
+          updateOriginDestination={this.updateOriginDestination.bind(this)}
         />
         <button onClick={this.findRide.bind(this)}>Find Ride</button>
         <button onClick={this.logoutUser.bind(this)}>Logout</button>
@@ -143,3 +150,8 @@ export default User
 // destination={this.state.destination.latLng}
 // origin={{lat: this.state.origin.lat, lng: this.state.origin.lng}}
 // destination={{lat: this.state.destination.lat, lng: this.state.destination.lng}}
+
+{/* <InputBoxes
+          updateOrigin={this.updateOrigin.bind(this)}
+          updateDestination={this.updateDestination.bind(this)}
+        /> */}
