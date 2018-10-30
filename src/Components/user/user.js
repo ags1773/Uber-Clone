@@ -13,14 +13,8 @@ class User extends Component {
   constructor () {
     super()
     this.state = {
-      origin: {
-        latLng: {},
-        address: ''
-      },
-      destination: {
-        latLng: {},
-        address: ''
-      },
+      origin: {},
+      destination: {},
       userPos: {lat: 12.9716, lng: 77.5946},
       drivers: []
     }
@@ -105,8 +99,8 @@ class User extends Component {
         <button onClick={this.findRide.bind(this)}>Find Ride</button>
         <button onClick={this.logoutUser.bind(this)}>Logout</button>
         <Map
-          origin={this.state.origin.latLng}
-          destination={this.state.destination.latLng}
+          origin={this.state.origin}
+          destination={this.state.destination}
           userPos={this.state.userPos}
           drivers={this.state.drivers} />
       </Fragment>
