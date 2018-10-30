@@ -5,7 +5,8 @@ class homeComponent extends Component {
   constructor () {
     super()
     this.state = {
-      url: ''
+      userUrl: '',
+      driverUrl: ''
     }
   }
   componentWillMount () {
@@ -15,7 +16,15 @@ class homeComponent extends Component {
       })
       .then(result => {
         console.log(result)
-        this.setState({url: result.url})
+        this.setState({userUrl: result.url})
+      })
+    fetch('/api/driver/loginUrl')
+      .then(result => {
+        return result.json()
+      })
+      .then(result => {
+        console.log(result)
+        this.setState({driverUrl: result.url})
       })
   }
   render () {
@@ -25,12 +34,14 @@ class homeComponent extends Component {
           <div className='column'>
             <UserLogin
               name='User'
-              url={this.state.url}
+              url={this.state.userUrl}
             />
           </div>
-          {/* <div className='column'>
-            <UserLogin name='Driver' />
-          </div> */}
+          <div className='column'>
+            <UserLogin
+              name='Driver'
+              url={this.state.driverUrl} />
+          </div>
         </div>
       </Fragment>
     )
