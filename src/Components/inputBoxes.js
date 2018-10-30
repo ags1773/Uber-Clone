@@ -13,10 +13,8 @@ class inputBoxes extends Component {
     autocomplete.addListener('place_changed', () => {
       var place = autocomplete.getPlace()
       const obj = {
-        latLng: {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        },
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
         address: place.formatted_address
       }
       if (id === 'originInput') this.props.updateOrigin(obj)

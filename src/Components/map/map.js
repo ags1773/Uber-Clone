@@ -20,8 +20,10 @@ class Map extends Component {
     if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
       directionsDisplay.setMap(map)
       directionsService.route({
-        origin: this.props.origin,
-        destination: this.props.destination,
+        origin: {lat: this.props.origin.lat,
+          lng: this.props.origin.lng},
+        destination: {lat: this.props.destination.lat,
+          lng: this.props.destination.lng},
         travelMode: 'DRIVING'
       }, function (response, status) {
         if (status === 'OK') {
