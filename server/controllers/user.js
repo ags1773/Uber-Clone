@@ -37,8 +37,8 @@ let getUserInfo = () => {
 let handleUsers = (user, req, res) => {
   Users.find({email: user.email})
     .then(existingUser => {
-      if (existingUser !== null) {
-        // mkae session
+      if (existingUser.length !== 0) {
+        // make session
         res.redirect('/user')
         return
       }
@@ -48,7 +48,7 @@ let handleUsers = (user, req, res) => {
       })
       newUser.save()
         .then(result => {
-          res.redirect('/api/user/redirect')
+          res.redirect('/user')
         })
         .catch(err => {
           res.status(500).json(err)

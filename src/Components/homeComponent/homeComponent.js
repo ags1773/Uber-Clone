@@ -15,7 +15,6 @@ class homeComponent extends Component {
         return result.json()
       })
       .then(result => {
-        console.log(result)
         this.setState({userUrl: result.url})
       })
     fetch('/api/driver/loginUrl')
@@ -23,7 +22,6 @@ class homeComponent extends Component {
         return result.json()
       })
       .then(result => {
-        console.log(result)
         this.setState({driverUrl: result.url})
       })
   }

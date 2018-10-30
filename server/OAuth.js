@@ -1,14 +1,14 @@
 const {google} = require('googleapis')
 
 const oauth2UserClient = new google.auth.OAuth2(
-  process.env.googleClientId,
-  process.env.googleClientSecret,
+  process.env.googleUserClientId,
+  process.env.googleUserClientSecret,
   'http://localhost:8000/api/user/oauthCb'
 )
 
 const oauth2DriverClient = new google.auth.OAuth2(
-  process.env.googleClientId,
-  process.env.googleClientSecret,
+  process.env.googleDriverClientId,
+  process.env.googleDriverClientSecret,
   'http://localhost:8000/api/driver/oauthCb'
 )
 

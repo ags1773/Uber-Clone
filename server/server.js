@@ -27,6 +27,7 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 
 app.use('/user', express.static(path.join(__dirname, '..', 'dist')))
+app.use('/driver', express.static(path.join(__dirname, '..', 'dist')))
 app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)

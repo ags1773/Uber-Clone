@@ -4,6 +4,9 @@ mongoose.set('useFindAndModify', false) // gets rid of DeprecationWarning: colle
 const driverSchema = mongoose.Schema({
   _id: mongoose.SchemaTypes.ObjectId,
   name: String,
+  email: String,
+  gender: String,
+  picture: String,
   car: {
     model: String,
     color: String

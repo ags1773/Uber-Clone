@@ -1,5 +1,66 @@
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const Drivers = require('../models/driver')
+const {driverLoginUrl, oauth2DriverClient, oauth2Driver} = require('../OAuth')
+
+exports.getLoginUrl = (req, res) => {
+  res.status(200).json({
+    url: driverLoginUrl
+  })
+}
+
+exports.handleAuth = (req, res) => {
+  oauth2DriverClient.getToken(req.query.code)
+    .then(response => {
+      oauth2DriverClient.setCredentials(response.tokens)
+      return getDriverInfo()
+    })
+    .then(result => {
+      let driver = {
+        name: result.data.name,
+        email: result.data.email,
+        gender: result.data.gender,
+        picture: result.data.picture
+      }
+      handleDriver(driver, req, res)
+    })
+}
+
+let getDriverInfo = () => {
+  return new Promise((resolve, reject) => {
+    oauth2Driver.userinfo.v2.me.get((error, info) => {
+      if (error) {
+        reject(error)
+      }
+      resolve(info)
+    })
+  })
+}
+
+let handleDriver = (driver, req, res) => {
+  Drivers.model.find({email: driver.email})
+    .then(existingDriver => {
+      if (existingDriver.length !== 0) {
+        //make session
+        res.redirect('/driver')
+        return
+      }
+      let newDriver = new Drivers.model({
+        _id: new mongoose.Types.ObjectId(),
+        location: {
+          type: 'Point',
+          coordinates: [77.5946, 12.9716]
+        },
+        ...driver
+      })
+      newDriver.save()
+        .then(driver => {
+          res.redirect('/driver')
+        })
+        .catch(err => {
+          console.log('ERROR WHILE MAKING NEW DRIVER ', err)
+        })
+    })
+}
 
 exports.createDriver = (req, res) => {
   Drivers.createDriver(req.body)
