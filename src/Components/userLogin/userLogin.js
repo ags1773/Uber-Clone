@@ -17,9 +17,10 @@ class userLogin extends React.Component {
     return (
       <div id='userLogin'>
         <p className='is-block is-size-3 has-text-centered is-uppercase'>{this.props.name}</p>
-        <button
+        <a href={this.props.url}>Login using google</a>
+        {/* <button
           className='is-block button is-light'
-          onClick={this.onLogin.bind(this)}>Login using google</button>
+          onClick={this.onLogin.bind(this)}>Login using google</button> */}
       </div>
     )
   }

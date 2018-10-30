@@ -1,15 +1,15 @@
-const {loginUrl, oauth2Client, oauth2} = require('../OAuth')
+const {userLoginUrl, oauth2UserClient, oauth2User} = require('../OAuth')
 const mongoose = require('mongoose')
 const Users = require('../models/user')
 
 exports.getLoginUrl = (req, res) => {
-  res.status(200).json({url: loginUrl})
+  res.status(200).json({url: userLoginUrl})
 }
 
 exports.handleAuth = (req, res) => {
-  oauth2Client.getToken(req.query.code)
+  oauth2UserClient.getToken(req.query.code)
     .then(response => {
-      oauth2Client.setCredentials(response.tokens)
+      oauth2UserClient.setCredentials(response.tokens)
       return getUserInfo()
     })
     .then(response => {
@@ -19,13 +19,13 @@ exports.handleAuth = (req, res) => {
         gender: response.data.gender,
         picture: response.data.picture
       }
-      handleUsers(user, res)
+      handleUsers(user, req, res)
     })
 }
 
 let getUserInfo = () => {
   return new Promise((resolve, reject) => {
-    oauth2.userinfo.v2.me.get((error, info) => {
+    oauth2User.userinfo.v2.me.get((error, info) => {
       if (error) {
         reject(error)
       }
@@ -34,15 +34,13 @@ let getUserInfo = () => {
   })
 }
 
-let handleUsers = (user, res) => {
+let handleUsers = (user, req, res) => {
   Users.find({email: user.email})
     .then(existingUser => {
       if (existingUser !== null) {
-        res.user = existingUser
-        res.redirect('/api/user/redirect')
-        // res.status(200).json({
-        //   user: existingUser,
-        //   url: '/user'})
+        // mkae session
+        res.redirect('/user')
+        return
       }
       let newUser = new Users({
         _id: new mongoose.Types.ObjectId(),
@@ -56,9 +54,4 @@ let handleUsers = (user, res) => {
           res.status(500).json(err)
         })
     })
-}
-
-exports.redirectUser = (req, res) => {
-  console.log('REQUEST', req)
-  console.log('\n\n\n\n\n RESPONSE', res)
 }
