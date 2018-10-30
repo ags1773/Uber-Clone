@@ -6,6 +6,7 @@ module.exports = function (socket) {
   let id, type // id is mongoID, not socketID
   // Listeners
   socket.on('userType', (userType, mongoID) => {
+    console.log(`[server] ${socket.id} userType >>`, userType, mongoID)
     id = mongoID
     type = userType
     if (userType === 'driver') sockets.drivers[mongoID] = socket
@@ -25,6 +26,9 @@ module.exports = function (socket) {
         if (err) console.log('[server] Error while updating driver in DB')
         else console.log('[server] Driver position updated successfully in DB!')
       })
+  })
+  socket.on('findRide', details => {
+    console.log('findRide >>', details)
   })
   socket.on('rideDeclined', () => console.log('[server] driver has declined the ride'))
   socket.on('disconnect', () => {

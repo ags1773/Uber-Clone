@@ -10,19 +10,25 @@ let options = {
 let geoError = () => {
   console.log('No position available')
 }
+
 class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
       origin: {
-        latLng: {},
+        // latLng: {},
+        lat: undefined,
+        lng: undefined,
         address: ''
       },
       destination: {
-        latLng: {},
+        // latLng: {},
+        lat: undefined,
+        lng: undefined,
         address: ''
       },
       userPos: {lat: 12.9716, lng: 77.5946},
+      // userPos: {lat: undefined, lng: undefined},
       drivers: []
     }
     socket = this.props.socket
@@ -42,7 +48,8 @@ class User extends Component {
 
   // ---- Lifecycle Hooks ----
   componentWillMount () {
-    watchId = navigator.geolocation.watchPosition(this.geoSuccess.bind(this), geoError, options)
+    // watchId = navigator.geolocation.watchPosition(this.geoSuccess.bind(this), geoError, options)
+    watchId = navigator.geolocation.getCurrentPosition(this.geoSuccess.bind(this), geoError, options)
   }
   componentWillUnmount () {
     navigator.geolocation.clearWatch(watchId)
@@ -71,25 +78,37 @@ class User extends Component {
   }
 
   findRide () {
-    let data = {
-      origin: this.state.origin.address,
-      destination: this.state.destination.address,
-      user: 'abc'
+    if (this.state.drivers.length && this.state.userPos.lat && this.state.userPos.lng && this.state.drivers && this.state.destination) {
+      const payload = {
+        drivers: this.state.drivers,
+        origin: this.state.origin,
+        destination: this.state.destination,
+        userPosition: this.state.userPos
+      }
+      socket.emit('findRide', payload)
+    } else {
+      console.log(`Can't find ride rite now`)
     }
-    let myInit = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }
-    fetch('/api/ride', myInit)
-      .then(result => {
-        console.log(result)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+
+    // let data = {
+    //   origin: this.state.origin.address,
+    //   destination: this.state.destination.address,
+    //   user: userID
+    // }
+    // let myInit = {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify(data)
+    // }
+    // fetch('/api/ride', myInit)
+    //   .then(result => {
+    //     console.log(result)
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
   }
 
   logoutUser () {
@@ -109,8 +128,8 @@ class User extends Component {
         <button onClick={this.findRide.bind(this)}>Find Ride</button>
         <button onClick={this.logoutUser.bind(this)}>Logout</button>
         <Map
-          origin={this.state.origin.latLng}
-          destination={this.state.destination.latLng}
+          origin={this.state.origin}
+          destination={this.state.destination}
           userPos={this.state.userPos}
           drivers={this.state.drivers} />
       </Fragment>
@@ -119,3 +138,8 @@ class User extends Component {
 }
 
 export default User
+
+// origin={this.state.origin.latLng}
+// destination={this.state.destination.latLng}
+// origin={{lat: this.state.origin.lat, lng: this.state.origin.lng}}
+// destination={{lat: this.state.destination.lat, lng: this.state.destination.lng}}
