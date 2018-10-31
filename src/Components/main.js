@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import {Route} from 'react-router-dom'
-import HomeComponent from './homeComponent/homeComponent'
+import LoginPage from './LoginPage/LoginPage'
 import User from './user/user'
 import DriverWait from './driver/driverWait/driverWait'
 import DriverRequested from './driver/driverRequested/driverRequested'
@@ -35,7 +35,7 @@ class Main extends Component {
   render () {
     return (
       <Fragment>
-        <Route exact path='/' render={props => <HomeComponent {...props} />} />
+        <Route exact path='/' render={props => <LoginPage {...props} />} />
         <Route exact path='/user' render={(props) => <User {...props} socket={socket} userID={tempUserID} />} />
         <Route exact path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} setRideDetailsState={this.setRideDetailsState.bind(this)} />} />
         <Route path='/driver/driverRequested' render={props => <DriverRequested {...props} socket={socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} />} />

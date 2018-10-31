@@ -26,7 +26,6 @@ class User extends Component {
         address: ''
       },
       userPos: {lat: 12.9716, lng: 77.5946},
-      // userPos: {lat: undefined, lng: undefined},
       drivers: []
     }
     socket = this.props.socket
@@ -64,7 +63,7 @@ class User extends Component {
       },
       body: JSON.stringify(data)
     }
-    fetch('/api/driver/find', myInit)
+    fetch('/api/user/findDrivers', myInit)
       .then(result => {
         return result.json()
       })
