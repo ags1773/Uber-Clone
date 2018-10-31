@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "node server/server.js",
+    "prod": "concurrently \"npm run build\" \"npm start\" ",
     "dev": "concurrently \"nodemon server/server.js\"  \"webpack-dev-server --mode development --open\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

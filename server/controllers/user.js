@@ -51,7 +51,7 @@ let handleUsers = (user, req, res) => {
   Users.find({email: user.email})
     .then(existingUser => {
       if (existingUser.length !== 0) {
-        req.session.user = existingUser
+        req.session.user = existingUser[0]._id
         res.redirect('/user')
         return
       }
@@ -61,11 +61,18 @@ let handleUsers = (user, req, res) => {
       })
       newUser.save()
         .then(result => {
-          req.session.user = result
+          req.session.user = result._id
           res.redirect('/user')
         })
         .catch(err => {
           res.status(500).json(err)
         })
+    })
+}
+
+exports.getUserDetails = (req, res) => {
+  Users.findById({_id: req.session.user})
+    .then(user => {
+      res.status(200).json(user)
     })
 }

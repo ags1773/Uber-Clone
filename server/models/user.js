@@ -7,11 +7,7 @@ const user = mongoose.Schema({
   gender: String,
   picture: String,
   pastRides: [{type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}],
-  currentRide: {type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'},
-  location: {
-    type: {type: String},
-    coordinates: [Number]
-  }
+  currentRide: {type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}
 })
 
 module.exports = mongoose.model('User', user)

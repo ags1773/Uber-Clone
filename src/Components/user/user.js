@@ -15,6 +15,7 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      user: {},
       origin: {
         lat: undefined,
         lng: undefined,
@@ -46,7 +47,16 @@ class User extends Component {
 
   // ---- Lifecycle Hooks ----
   componentWillMount () {
-    // watchId = navigator.geolocation.watchPosition(this.geoSuccess.bind(this), geoError, options)
+    fetch('/api/user/userDetails')
+      .then(res => {
+        return res.json()
+      })
+      .then(user => {
+        this.setState({user: user})
+      })
+      .catch(err => {
+        console.log('ERROR ', err)
+      })
     watchId = navigator.geolocation.getCurrentPosition(this.geoSuccess.bind(this), geoError, options)
   }
   componentWillUnmount () {
