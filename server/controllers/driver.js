@@ -40,7 +40,7 @@ let handleDriver = (driver, req, res) => {
   Drivers.model.find({email: driver.email})
     .then(existingDriver => {
       if (existingDriver.length !== 0) {
-        // make session
+        req.session.driver = existingDriver
         res.redirect('/driver')
         return
       }
@@ -54,6 +54,7 @@ let handleDriver = (driver, req, res) => {
       })
       newDriver.save()
         .then(driver => {
+          req.session.driver = driver
           res.redirect('/driver')
         })
         .catch(err => {
