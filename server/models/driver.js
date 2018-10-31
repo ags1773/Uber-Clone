@@ -8,6 +8,7 @@ const driverSchema = mongoose.Schema({
     model: String,
     color: String
   },
+  isOnline: Boolean,
   location: {
     type: {type: String},
     coordinates: [Number]
@@ -23,6 +24,7 @@ exports.model = Model
 exports.createDriver = body => Model.create(body)
 exports.saveDriver = driver => driver.save()
 exports.findDriversWithin = (userLoc, distance) => Model.find({
+  isOnline: true,
   location: {
     $nearSphere: {
       $geometry: {

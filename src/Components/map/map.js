@@ -7,13 +7,15 @@ class Map extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      userPos: this.props.userPos,
       origin: this.props.origin,
-      destination: this.props.destination
+      destination: this.props.destination,
+      drivers: this.props.drivers
     }
   }
   componentDidMount () {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: this.props.origin,
+      center: this.state.userPos,
       zoom: 15
     })
     marker = new google.maps.Marker()
@@ -26,8 +28,10 @@ class Map extends Component {
     // if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
     console.log('$$$ >>', props)
     this.setState({
+      userPos: props.userPos,
       origin: props.origin,
-      destination: props.destination
+      destination: props.destination,
+      drivers: props.drivers
     })
     map.setCenter(props.origin)
     console.log('Map props >>', props)
@@ -47,23 +51,23 @@ class Map extends Component {
       })
     }
     // display user position
-    // map.setCenter(this.props.userPos) // centers map to user position
-    // marker.setMap(map)
-    // marker.setPosition(this.props.userPos)
+    map.setCenter(this.state.userPos) // centers map to user position
+    marker.setMap(map)
+    marker.setPosition(this.state.userPos)
     // display drivers near user
-    // if (this.props.drivers.length !== 0) {
-    //   let drivers = this.props.drivers
-    //   drivers.forEach(d => {
-    //     let m = new google.maps.Marker({
-    //       position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
-    //       map: map,
-    //       icon: {
-    //         path: google.maps.SymbolPath.CIRCLE,
-    //         scale: 5
-    //       }
-    //     })
-    //   })
-    // }
+    if (this.state.drivers.length !== 0) {
+      let drivers = this.state.drivers
+      drivers.forEach(d => {
+        let m = new google.maps.Marker({
+          position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
+          map: map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 5
+          }
+        })
+      })
+    }
   }
 
   isValid (obj) {

@@ -4,6 +4,7 @@ import config from '../../../config'
 import {getCurrLocation} from '../../../helperFunctions'
 
 function rideAccepted (props) { // set map origin destination & render map component
+  props.socket.emit('rideAccepted')
   getCurrLocation()
     .then(pos => {
       let crd = pos.coords
@@ -11,7 +12,7 @@ function rideAccepted (props) { // set map origin destination & render map compo
       if (crd.accuracy <= config.driverMinAccuracy) {
         const obj = { // origin => driver's location, destination => user's location
           origin: {lat: crd.latitude, lng: crd.longitude},
-          destination: {lat: props.userDetails.origin.lat, lng: props.userDetails.origin.lng},
+          destination: {lat: props.rideDetails.origin.lat, lng: props.rideDetails.origin.lng},
           userPos: {lat: crd.latitude, lng: crd.longitude}
         }
         props.setMapState(obj, () => props.history.push('/driver/map'))
@@ -25,12 +26,16 @@ function rideDeclined (props) {
 }
 
 function DriverRequested (props) {
+  props.socket.on('rideCancelled', () => { // fired when some other driver accepts the ride
+    this.props.history.goBack()
+  })
+
   return (
     <div className='container' id='driverRequested'>
       <p className='is-size-3 has-text-centered is-uppercase'>Ride request received!</p>
-      <p><strong>Name:</strong> {props.userDetails.name}</p>
-      <p><strong>Origin:</strong> {props.userDetails.origin.address}</p>
-      <p><strong>Destination:</strong> {props.userDetails.destination.address}</p>
+      <p><strong>Name:</strong> {props.rideDetails.name}</p>
+      <p><strong>Origin:</strong> {props.rideDetails.origin.address}</p>
+      <p><strong>Destination:</strong> {props.rideDetails.destination.address}</p>
       <div className='buttons'>
         <button className='button is-dark' onClick={rideAccepted.bind(this, props)}>Accept</button>
         <button className='button is-dark' onClick={rideDeclined.bind(this, props)}>Decline</button>
@@ -41,7 +46,7 @@ function DriverRequested (props) {
 
 export default DriverRequested
 
-// Input to component >>> prop.userDetails =
+// Input to component >>> prop.rideDetails =
 // {
 //   name: 'John Doe',
 //   origin: {lat: 12.9716, lng: 77.5946, address: 'bla bla'},
