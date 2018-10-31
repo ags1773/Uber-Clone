@@ -110,13 +110,6 @@ class User extends Component {
     //   })
   }
 
-  logoutUser () {
-    fetch('/api/user/logout')
-      .then((result) => {
-        console.log(result)
-      })
-  }
-
   render () {
     return (
       <Fragment>
@@ -124,7 +117,7 @@ class User extends Component {
           updateOriginDestination={this.updateOriginDestination.bind(this)}
         />
         <button onClick={this.findRide.bind(this)}>Find Ride</button>
-        <button onClick={this.logoutUser.bind(this)}>Logout</button>
+        <a href='/api/user/logout'>Logout</a>
         <Map
           origin={this.state.origin}
           destination={this.state.destination}

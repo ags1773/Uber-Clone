@@ -5,6 +5,7 @@ const {authenticateDriver} = require('../middlewares/authenticate')
 
 router.get('/loginUrl', driverController.getLoginUrl)
 router.get('/oauthCb', driverController.handleAuth)
+router.get('/logout', driverController.logout)
 
 router.post('/', authenticateDriver, driverController.createDriver)
 router.patch('/:id', authenticateDriver, driverController.updateDriver)

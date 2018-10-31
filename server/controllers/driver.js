@@ -8,6 +8,11 @@ exports.getLoginUrl = (req, res) => {
   })
 }
 
+exports.logout = (req, res) => {
+  req.session.destroy()
+  res.redirect('/')
+}
+
 exports.handleAuth = (req, res) => {
   oauth2DriverClient.getToken(req.query.code)
     .then(response => {

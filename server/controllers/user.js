@@ -6,6 +6,11 @@ exports.getLoginUrl = (req, res) => {
   res.status(200).json({url: userLoginUrl})
 }
 
+exports.logout = (req, res) => {
+  req.session.destroy()
+  res.redirect('/')
+}
+
 exports.handleAuth = (req, res) => {
   oauth2UserClient.getToken(req.query.code)
     .then(response => {
