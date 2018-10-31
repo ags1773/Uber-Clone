@@ -11,6 +11,7 @@ const driverSchema = mongoose.Schema({
     model: String,
     color: String
   },
+  isOnline: Boolean,
   location: {
     type: {type: String},
     coordinates: [Number]
@@ -21,11 +22,12 @@ const driverSchema = mongoose.Schema({
 driverSchema.index({location: '2dsphere'})
 
 const Model = mongoose.model('Driver', driverSchema)
-exports.model = Model
+exports.Model = Model
 
 exports.createDriver = body => Model.create(body)
 exports.saveDriver = driver => driver.save()
 exports.findDriversWithin = (userLoc, distance) => Model.find({
+  isOnline: true,
   location: {
     $nearSphere: {
       $geometry: {
@@ -36,8 +38,6 @@ exports.findDriversWithin = (userLoc, distance) => Model.find({
     }
   }
 })
-exports.updateDriver = (id, updateObj, callback) => {
-  console.log('Inside driver model >>', id, updateObj)
-  Model.findOneAndUpdate(id, {$set: updateObj}, callback)
-}
+exports.updateDriver = (id, updateObj, callback) => Model.findOneAndUpdate(id, {$set: updateObj}, callback)
 exports.deleteDriver = id => Model.remove({_id: id})
+exports.findDriver = (id, callback) => Model.findById(id, callback)

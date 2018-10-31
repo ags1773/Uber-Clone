@@ -10,7 +10,7 @@ function intervalFunction () {
       let crd = pos.coords
       console.log('Driver lat, long, accuracy >>', crd.latitude, crd.longitude, crd.accuracy)
       if (crd.accuracy <= config.driverMinAccuracy) {
-        if (this.prevLat && this.prevLng) { // ignores the 1st reading
+        if (this.prevLat && this.prevLng) {
           if (geodesicInMtrs(this.prevLat, this.prevLng, crd.latitude, crd.longitude) > config.driverMinDist) {
             console.log(`Driver moving.. transmitting location to server`)
             transmitDriverLocToServer(crd.latitude, crd.longitude)
@@ -18,7 +18,8 @@ function intervalFunction () {
             console.log(`Driver hasn't moved more than ${config.driverMinDist} mtr... Did NOT transmit location to server`)
           }
         } else {
-          console.log('Ignoring 1st reading...')
+          console.log('Transmitting 1st reading...')
+          transmitDriverLocToServer(crd.latitude, crd.longitude)
         }
         this.prevLat = crd.latitude
         this.prevLng = crd.longitude
@@ -35,9 +36,16 @@ function transmitDriverLocToServer (lat, lng) {
 }
 
 class DriverWait extends Component {
-  componentWillMount () {
+  constructor (props) {
+    super(props)
+    this.state = {
+      //
+    }
     socket = this.props.socket
     driverID = this.props.driverID
+    socket.emit('userType', 'driver', driverID)
+  }
+  componentWillMount () {
     this.setId = setInterval(intervalFunction.bind(this), config.driverCoordBroadcastTimeout * 1000)
     this.prevLat = 0
     this.prevLng = 0

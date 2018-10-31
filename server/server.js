@@ -31,13 +31,7 @@ app.use('/driver', express.static(path.join(__dirname, '..', 'dist')))
 app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)
-// save socket for each user/driver in DB, delete it on disconnect
-// When a user wants a ride, fetch array of drivers in the vicinity from DB. Now you have each driver's socket
-// send 'rideAssigned' event on the 1st guy's socket. If he declines, emit it on the next driver's socket...
-io.on('connection', socket => {
-  console.log('Socket connection estbilished...')
-  socketioCb(socket)
-})
+io.on('connection', socket => socketioCb(socket))
 
 app.use((req, res, next) => {
   let error = new Error('Not found')
