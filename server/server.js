@@ -13,6 +13,8 @@ const socketioCb = require('./socketioCb')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
+const {authenticateUser, authenticateDriver} = require('./middlewares/authenticate')
+
 const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
 const rideRoutes = require('./routes/ride')
@@ -35,8 +37,8 @@ app.use(session({
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }))
 
-app.use('/user', express.static(path.join(__dirname, '..', 'dist')))
-app.use('/driver', express.static(path.join(__dirname, '..', 'dist')))
+app.use('/user', authenticateUser, express.static(path.join(__dirname, '..', 'dist')))
+app.use('/driver', authenticateDriver, express.static(path.join(__dirname, '..', 'dist')))
 app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)
