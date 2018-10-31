@@ -10,6 +10,8 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const socketioCb = require('./socketioCb')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
 const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
@@ -25,6 +27,13 @@ if (process.env.MODE === 'development') {
 app.use(express.static(path.join(__dirname, '..', 'dist')))
 app.use(morgan('dev'))
 app.use(bodyParser.json())
+
+app.use(session({
+  secret: process.env.secretKey,
+  saveUninitialized: false,
+  resave: false,
+  store: new MongoStore({mongooseConnection: mongoose.connection})
+}))
 
 app.use('/user', express.static(path.join(__dirname, '..', 'dist')))
 app.use('/driver', express.static(path.join(__dirname, '..', 'dist')))

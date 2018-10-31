@@ -38,7 +38,7 @@ let handleUsers = (user, req, res) => {
   Users.find({email: user.email})
     .then(existingUser => {
       if (existingUser.length !== 0) {
-        // make session
+        req.session.user = existingUser
         res.redirect('/user')
         return
       }
@@ -48,6 +48,7 @@ let handleUsers = (user, req, res) => {
       })
       newUser.save()
         .then(result => {
+          req.session.user = result
           res.redirect('/user')
         })
         .catch(err => {
