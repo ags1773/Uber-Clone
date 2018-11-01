@@ -38,12 +38,8 @@ function transmitDriverLocToServer (lat, lng) {
 class DriverWait extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      //
-    }
     socket = this.props.socket
     driverID = this.props.driverID
-    socket.emit('userType', 'driver', driverID)
   }
   componentWillMount () {
     this.setId = setInterval(intervalFunction.bind(this), config.driverCoordBroadcastTimeout * 1000)

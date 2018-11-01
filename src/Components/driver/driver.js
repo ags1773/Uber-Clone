@@ -21,6 +21,7 @@ class Driver extends Component {
       })
       .then(driver => {
         this.setState({driver: driver})
+        this.props.socket.emit('userType', 'driver', driver._id)
         this.props.onLogin(driver)
       })
       .catch(err => {
