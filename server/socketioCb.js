@@ -34,11 +34,11 @@ module.exports = function (socket) {
   })
   socket.on('findRide', details => {
     // console.log('sockets >>', sockets)
-    const driversArr = details.drivers.map(e => e._id).map(e => {
-      if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-      else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
-    })
-    console.log('driversArr >>', driversArr)
+    // const driversArr = details.drivers.map(e => e._id).map(e => {
+    //   if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+    //   else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+    // })
+    // console.log('driversArr >>', driversArr)
 
     // const driverId = driversArr.shift()
 
