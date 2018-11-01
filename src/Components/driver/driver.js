@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import DriverWait from './driverWait/driverWait'
 import DriverRequested from './driverRequested/driverRequested'
-import DriverMap from './driverMap/driverMap'
+import Map from '../map/map'
 
 class Driver extends Component {
   constructor (props) {
@@ -41,6 +41,7 @@ class Driver extends Component {
     })
   }
   setMapState (obj) {
+    console.log('MAP RENDER DATA :', obj)
     this.setState({
       status: 'driverMap1',
       mapRenderData: obj
@@ -57,7 +58,11 @@ class Driver extends Component {
         component = <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
         break
       case 'driverMap1':
-        component = <DriverMap mapRenderData={this.state.mapRenderData} />
+        component = <Map
+          userPos={this.state.mapRenderData.userPos}
+          origin={this.state.mapRenderData.origin}
+          destination={this.state.mapRenderData.destination}
+        />
     }
     return component
   }

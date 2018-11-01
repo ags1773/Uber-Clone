@@ -49,10 +49,3 @@ function DriverRequested (props) {
 }
 
 export default DriverRequested
-
-// Input to component >>> prop.rideDetails =
-// {
-//   name: 'John Doe',
-//   origin: {lat: 12.9716, lng: 77.5946, address: 'bla bla'},
-//   destination: {lat: 13.1516, lng: 76.4146, address: 'bla bla'}
-// }

@@ -10,6 +10,10 @@ let isEmpty = function (obj) {
 }
 
 class Map extends Component {
+  constructor () {
+    super()
+    this.displayDirections = this.displayDirections.bind(this)
+  }
   componentDidMount () {
     map = new google.maps.Map(document.getElementById('map'), {
       center: this.props.userPos,
@@ -18,14 +22,19 @@ class Map extends Component {
     marker = new google.maps.Marker()
     directionsService = new google.maps.DirectionsService()
     directionsDisplay = new google.maps.DirectionsRenderer()
+    this.displayDirections(this.props)
   }
 
   componentWillReceiveProps (props) {
-    if (!isEmpty(props.origin) && !isEmpty(props.destination)) {
+    this.displayDirections(props)
+  }
+
+  displayDirections (mapData) {
+    if (!isEmpty(mapData.origin) && !isEmpty(mapData.destination)) {
       directionsDisplay.setMap(map)
       directionsService.route({
-        origin: {lat: props.origin.lat, lng: props.origin.lng},
-        destination: {lat: props.destination.lat, lng: props.destination.lng},
+        origin: {lat: mapData.origin.lat, lng: mapData.origin.lng},
+        destination: {lat: mapData.destination.lat, lng: mapData.destination.lng},
         travelMode: 'DRIVING'
       }, function (response, status) {
         if (status === 'OK') {
@@ -36,12 +45,12 @@ class Map extends Component {
       })
     }
     // display user position
-    map.setCenter(props.userPos) // centers map to user position
+    map.setCenter(mapData.userPos) // centers map to user position
     marker.setMap(map)
-    marker.setPosition(props.userPos)
+    marker.setPosition(mapData.userPos)
     // display drivers near user
-    if (props.drivers.length !== 0) {
-      let drivers = props.drivers
+    if (mapData.drivers && mapData.drivers.length !== 0) {
+      let drivers = mapData.drivers
       drivers.forEach(d => {
         let m = new google.maps.Marker({
           position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
