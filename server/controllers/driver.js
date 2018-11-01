@@ -45,7 +45,7 @@ let handleDriver = (driver, req, res) => {
   Drivers.Model.find({email: driver.email})
     .then(existingDriver => {
       if (existingDriver.length !== 0) {
-        req.session.driver = existingDriver
+        req.session.driver = existingDriver[0]._id
         res.redirect('/driver')
         return
       }
@@ -59,7 +59,7 @@ let handleDriver = (driver, req, res) => {
       })
       newDriver.save()
         .then(driver => {
-          req.session.driver = driver
+          req.session.driver = driver._id
           res.redirect('/driver')
         })
         .catch(err => {
@@ -100,4 +100,11 @@ exports.findDriver = (req, res) => {
     if (err) res.status(500).json(err)
     else res.status(200).json(found)
   })
+}
+
+exports.getDriverDetails = (req, res) => {
+  Drivers.Model.findById({_id: req.session.driver})
+    .then(driver => {
+      res.status(200).json(driver)
+    })
 }
