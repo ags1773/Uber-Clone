@@ -2,6 +2,7 @@ const DriverModel = require('./models/driver')
 const sockets = {drivers: {}, users: {}}
 const driverWaitTimeout = 2 * 60 // seconds
 
+console.log('BEFORE Everything >>', sockets)
 module.exports = function (socket) {
   console.log(`[server] ${socket.id} connected`)
   let id, type // id is mongoID, not socketID
@@ -33,8 +34,14 @@ module.exports = function (socket) {
   })
   socket.on('findRide', details => {
     // console.log('sockets >>', sockets)
-    console.log('findRide >>', details)
-    // const driversArr = details.drivers.map(e => e._id)
+    const driversArr = details.drivers.map(e => e._id).map(e => {
+      if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+      else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+    })
+    console.log('driversArr >>', driversArr)
+
+    // const driverId = driversArr.shift()
+
     // driversArr.forEach(driverId => {
     //   if (sockets.drivers.hasOwnProperty(driverId)) {
     //     const driverSocket = sockets.drivers[driverId]
@@ -79,6 +86,6 @@ function setDiverIsOnline (val, driverID) {
     },
     (err, result) => {
       if (err) console.log('[server] Error while updating driver isOnline in DB')
-      else console.log(`[server] Driver isOnline => ${val}`)
+      else console.log(`[server] ${driverID} Driver isOnline => ${val}`)
     })
 }
