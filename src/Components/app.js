@@ -20,8 +20,10 @@ class App extends Component {
     super()
     this.state = {
       scriptLoaded: false,
-      socket: undefined
+      socket: undefined,
+      loggedInCustomer: {}
     }
+    this.getCustomer = this.getCustomer.bind(this)
   }
   componentWillMount () {
     loadScript(script)
@@ -34,12 +36,17 @@ class App extends Component {
       .catch(e => console.log(e))
   }
 
+  getCustomer (customer) {
+    this.setState({loggedInCustomer: customer})
+  }
+
   render () {
     if (this.state.scriptLoaded) {
       return (
         <Fragment>
-          <NavBar />
-          <Main socket={this.state.socket} />
+          <NavBar user={this.state.loggedInCustomer} />
+          <Main socket={this.state.socket}
+            onCustomerLogin={customer => { this.getCustomer(customer) }} />
         </Fragment>
       )
     } else {

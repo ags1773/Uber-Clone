@@ -16,7 +16,15 @@ class Navbar extends Component {
     }
   }
 
+  isEmpty (obj) {
+    if (obj) {
+      return Object.keys(obj).length === 0 && obj.constructor === Object
+    }
+    return true
+  }
+
   render () {
+    let displayUserNav = !this.isEmpty(this.props.user)
     return (
       <nav className='navbar' role='navigation' aria-label='main navigation'>
         <div className='navbar-brand'>
@@ -30,36 +38,25 @@ class Navbar extends Component {
           </a>
         </div>
         <div id='navbar' className='navbar-menu'>
-          <div className='navbar-start'>
-            <a className='navbar-item'>
-              link
-            </a>
-          </div>
-          <div className='navbar-end'>
-            <p className='navbar-item'>
-              User | Signed in as: ---
-            </p>
+          {displayUserNav ? <div className='navbar-end'>
             <div className='navbar-item has-dropdown is-hoverable'>
               <a className='navbar-link'>
                 <img style={imgStyle} src='https://res.cloudinary.com/dwecmtn7q/image/upload/v1541036158/cat2.jpg' />
               </a>
               <div className='navbar-dropdown is-right'>
                 <a className='navbar-item'>
-                  About
+                  Profile
                 </a>
                 <a className='navbar-item'>
-                  Jobs
-                </a>
-                <a className='navbar-item'>
-                  Contact
+                  Past Rides
                 </a>
                 <hr className='navbar-divider' />
-                <a className='navbar-item'>
-                  Report an issue
+                <a className='navbar-item' href='/api/user/logout'>
+                  Logout
                 </a>
               </div>
             </div>
-          </div>
+          </div> : null}
         </div>
       </nav>
     )

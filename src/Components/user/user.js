@@ -53,6 +53,7 @@ class User extends Component {
       })
       .then(user => {
         this.setState({user: user})
+        this.props.onLogin(user)
       })
       .catch(err => {
         console.log('ERROR ', err)
@@ -95,28 +96,8 @@ class User extends Component {
       }
       socket.emit('findRide', payload)
     } else {
-      console.log(`Can't find ride rite now`)
+      console.log(`Can't find ride right now`)
     }
-
-    // let data = {
-    //   origin: this.state.origin.address,
-    //   destination: this.state.destination.address,
-    //   user: userID
-    // }
-    // let myInit = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(data)
-    // }
-    // fetch('/api/ride', myInit)
-    //   .then(result => {
-    //     console.log(result)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
   }
 
   render () {
@@ -126,7 +107,6 @@ class User extends Component {
           updateOriginDestination={this.updateOriginDestination.bind(this)}
         />
         <button onClick={this.findRide.bind(this)}>Find Ride</button>
-        <a href='/api/user/logout'>Logout</a>
         <Map
           origin={this.state.origin}
           destination={this.state.destination}
