@@ -15,14 +15,14 @@ function rideAccepted (props) { // set map origin destination & render map compo
           destination: {lat: props.rideDetails.origin.lat, lng: props.rideDetails.origin.lng},
           userPos: {lat: crd.latitude, lng: crd.longitude}
         }
-        props.setMapState(obj, () => props.history.push('/driver/map'))
+        // props.setMapState(obj, () => props.history.push('/driver/map'))
+        // render driver map component
       } else console.log(`Driver's location inaccurate... Accuracy = ${crd.accuracy}, threshold = ${config.driverMinAccuracy}`)
     })
     .catch(e => console.log('Error getting driver location ', e))
 }
 function rideDeclined (props) {
   props.socket.emit('rideDeclined')
-  props.history.goBack()
 }
 function simulateRideCancelled (props) { // temperory.. for testing purpose
   props.socket.emit('EmitRideCancelled')
@@ -30,7 +30,8 @@ function simulateRideCancelled (props) { // temperory.. for testing purpose
 
 function DriverRequested (props) {
   props.socket.on('rideCancelled', () => { // fired when some other driver accepts the ride
-    props.history.goBack()
+    console.log('rideCancelled!!')
+    props.resetRideStatus()
   })
 
   return (

@@ -50,23 +50,6 @@ module.exports = function (socket) {
         newDriverSockets.forEach(s => s.emit('rideCancelled'))
       })
     })
-
-    // const driverId = driversArr.shift()
-
-    // driversArr.forEach(driverId => {
-    //   if (sockets.drivers.hasOwnProperty(driverId)) {
-    //     const driverSocket = sockets.drivers[driverId]
-    //     driverSocket.emit('rideAssigned', details)
-    //     setTimeout(() => { driverSocket.emit('rideCancelled') }, driverWaitTimeout) // cancels ride if driver takes too long to accept
-    //     driverSocket.on('rideDeclined', () => console.log(`[server] driver ${driverId} has declined the ride`))
-    //     driverSocket.on('rideAccepted', () => {
-    //       // send 'rideCancelled' on everyone else's socket
-          
-    //     })
-    //   } else {
-    //     console.log(`[server] ERROR! socket not found for driver with mongoId ${driverId}`)
-    //   }
-    // })
   })
 
   socket.on('disconnect', () => {
