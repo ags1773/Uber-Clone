@@ -41,7 +41,7 @@ class Navbar extends Component {
           {displayUserNav ? <div className='navbar-end'>
             <div className='navbar-item has-dropdown is-hoverable'>
               <a className='navbar-link'>
-                <img style={imgStyle} src='https://res.cloudinary.com/dwecmtn7q/image/upload/v1541036158/cat2.jpg' />
+                <img style={imgStyle} src={this.props.user.picture} />
               </a>
               <div className='navbar-dropdown is-right'>
                 <a className='navbar-item'>
