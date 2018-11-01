@@ -16,16 +16,8 @@ class User extends Component {
     super(props)
     this.state = {
       user: {},
-      origin: {
-        lat: undefined,
-        lng: undefined,
-        address: ''
-      },
-      destination: {
-        lat: undefined,
-        lng: undefined,
-        address: ''
-      },
+      origin: {},
+      destination: {},
       userPos: {lat: 12.9716, lng: 77.5946},
       drivers: []
     }
@@ -38,11 +30,10 @@ class User extends Component {
     this.setState({userPos: {lat: position.coords.latitude, lng: position.coords.longitude}})
   }
   updateOriginDestination (obj) {
-    console.log('UPDATE origin destination ran', obj)
     this.setState({
       origin: obj.origin,
       destination: obj.destination
-    }, () => { console.log('Updated State >>', this.state) })
+    })
   }
 
   // ---- Lifecycle Hooks ----

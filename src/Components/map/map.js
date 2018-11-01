@@ -2,20 +2,17 @@ import React, {Component} from 'react'
 import './map.css'
 
 let map, marker, directionsService, directionsDisplay
+let isEmpty = function (obj) {
+  if (obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object
+  }
+  return true
+}
 
 class Map extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      userPos: this.props.userPos,
-      origin: this.props.origin,
-      destination: this.props.destination,
-      drivers: this.props.drivers
-    }
-  }
   componentDidMount () {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: this.state.userPos,
+      center: this.props.userPos,
       zoom: 15
     })
     marker = new google.maps.Marker()
@@ -24,17 +21,11 @@ class Map extends Component {
   }
 
   componentWillReceiveProps (props) {
-    this.setState({
-      userPos: props.userPos,
-      origin: props.origin,
-      destination: props.destination,
-      drivers: props.drivers
-    })
-    if (this.isValid(this.state.origin) && this.isValid(this.state.destination)) {
+    if (!isEmpty(props.origin) && !isEmpty(props.destination)) {
       directionsDisplay.setMap(map)
       directionsService.route({
-        origin: {lat: this.state.origin.lat, lng: this.state.origin.lng},
-        destination: {lat: this.state.destination.lat, lng: this.state.destination.lng},
+        origin: {lat: props.origin.lat, lng: props.origin.lng},
+        destination: {lat: props.destination.lat, lng: props.destination.lng},
         travelMode: 'DRIVING'
       }, function (response, status) {
         if (status === 'OK') {
@@ -45,12 +36,12 @@ class Map extends Component {
       })
     }
     // display user position
-    map.setCenter(this.state.userPos) // centers map to user position
+    map.setCenter(props.userPos) // centers map to user position
     marker.setMap(map)
-    marker.setPosition(this.state.userPos)
+    marker.setPosition(props.userPos)
     // display drivers near user
-    if (this.state.drivers.length !== 0) {
-      let drivers = this.state.drivers
+    if (props.drivers.length !== 0) {
+      let drivers = props.drivers
       drivers.forEach(d => {
         let m = new google.maps.Marker({
           position: {lat: d.location.coordinates[1], lng: d.location.coordinates[0]},
@@ -62,15 +53,6 @@ class Map extends Component {
         })
       })
     }
-  }
-
-  isValid (obj) {
-    let flag = false
-    Object.keys(obj).forEach(k => {
-      if (obj[k]) flag = true
-      else flag = false
-    })
-    return flag
   }
 
   render () {
