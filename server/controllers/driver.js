@@ -55,6 +55,7 @@ let handleDriver = (driver, req, res) => {
           type: 'Point',
           coordinates: [77.5946, 12.9716]
         },
+        isOnline: false,
         ...driver
       })
       newDriver.save()

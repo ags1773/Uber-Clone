@@ -7,8 +7,8 @@ import DriverRequested from './driver/driverRequested/driverRequested'
 import DriverMap from './driver/driverMap/driverMap'
 
 // Global vars
-let tempDriverID = '5bd945e69dcd65623974ab09' // mock...This will come from google redirect
-let tempUserID = '5bd29d791c9d440000cd773a'
+let tempDriverID = '5bda8abcd239d92e88036293' // mock...This will come from google redirect
+let tempUserID = '5bda87b871d7b42bf6e33014'
 let socket
 
 class Main extends Component {
