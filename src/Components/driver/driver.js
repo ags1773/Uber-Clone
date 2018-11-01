@@ -28,14 +28,18 @@ class Driver extends Component {
         console.log('ERROR ', err)
       })
   }
-
+  resetRideStatus () {
+    this.setState({
+      status: 'waiting',
+      rideDetails: {}
+    })
+  }
   setRideDetailsState (rideDetails) {
     this.setState({
       rideDetails: rideDetails,
       status: 'rideAssign'
     })
   }
-  
   setMapState (obj, callback) {
     this.setState({
       mapRenderData: obj
@@ -47,7 +51,7 @@ class Driver extends Component {
       this.state.status === 'waiting'
         ? <DriverWait socket={this.props.socket} driverID={this.state.driver._id} setRideDetailsState={this.setRideDetailsState.bind(this)} />
         : this.state.status === 'rideAssign'
-          ? <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} />
+          ? <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
           : null
     )
   }
