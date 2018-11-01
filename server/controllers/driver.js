@@ -42,7 +42,7 @@ let getDriverInfo = () => {
 }
 
 let handleDriver = (driver, req, res) => {
-  Drivers.model.find({email: driver.email})
+  Drivers.Model.find({email: driver.email})
     .then(existingDriver => {
       if (existingDriver.length !== 0) {
         req.session.driver = existingDriver

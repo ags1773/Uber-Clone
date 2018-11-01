@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 
+const imgStyle = {
+  borderRadius: '50%'
+}
 class Navbar extends Component {
   componentDidMount () {
     const $navbarBurger = document.querySelector('.navbar-burger')
@@ -36,16 +39,26 @@ class Navbar extends Component {
             <p className='navbar-item'>
               User | Signed in as: ---
             </p>
-            {/* <div className='navbar-item'>
-              <div className='buttons'>
-                <a className='button is-dark'>
-                  <strong>Sign up</strong>
+            <div className='navbar-item has-dropdown is-hoverable'>
+              <a className='navbar-link'>
+                <img style={imgStyle} src='https://res.cloudinary.com/dwecmtn7q/image/upload/v1541036158/cat2.jpg' />
+              </a>
+              <div className='navbar-dropdown is-right'>
+                <a className='navbar-item'>
+                  About
                 </a>
-                <a className='button is-dark'>
-                  Log in
+                <a className='navbar-item'>
+                  Jobs
+                </a>
+                <a className='navbar-item'>
+                  Contact
+                </a>
+                <hr className='navbar-divider' />
+                <a className='navbar-item'>
+                  Report an issue
                 </a>
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </nav>
