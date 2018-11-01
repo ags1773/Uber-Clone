@@ -33,12 +33,23 @@ module.exports = function (socket) {
       })
   })
   socket.on('findRide', details => {
-    // console.log('sockets >>', sockets)
-    // const driversArr = details.drivers.map(e => e._id).map(e => {
-    //   if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-    //   else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
-    // })
-    // console.log('driversArr >>', driversArr)
+    const driversIds = details.drivers.map(e => e._id)
+    const driverSockets = driversIds.map(e => {
+      if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+      else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+    })
+    driverSockets.forEach((driverSocket, i) => {
+      driverSocket.emit('rideAssigned', details)
+      // setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
+      driverSocket.on('rideAccepted', () => {
+        driversIds.splice(i, 1)
+        const newDriverSockets = driversIds.map(e => {
+          if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+          else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+        })
+        newDriverSockets.forEach(s => s.emit('rideCancelled'))
+      })
+    })
 
     // const driverId = driversArr.shift()
 
@@ -76,6 +87,7 @@ module.exports = function (socket) {
     destination: {lat: 12.9217303, lng: 77.589696, address: '67-11, 8th B Main Rd, 4th T Block East, 4th Block, Jayanagar, Bengaluru, Karnataka 560011'}
   }
   socket.on('EmitRideAssigned', () => socket.emit('rideAssigned', rideDetails))
+  socket.on('EmitRideCancelled', () => socket.emit('rideCancelled'))
   // ------ Test Stuff END -------
 }
 

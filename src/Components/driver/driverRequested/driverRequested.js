@@ -24,10 +24,13 @@ function rideDeclined (props) {
   props.socket.emit('rideDeclined')
   props.history.goBack()
 }
+function simulateRideCancelled (props) { // temperory.. for testing purpose
+  props.socket.emit('EmitRideCancelled')
+}
 
 function DriverRequested (props) {
   props.socket.on('rideCancelled', () => { // fired when some other driver accepts the ride
-    this.props.history.goBack()
+    props.history.goBack()
   })
 
   return (
@@ -39,6 +42,7 @@ function DriverRequested (props) {
       <div className='buttons'>
         <button className='button is-dark' onClick={rideAccepted.bind(this, props)}>Accept</button>
         <button className='button is-dark' onClick={rideDeclined.bind(this, props)}>Decline</button>
+        <button className='button is-dark' onClick={simulateRideCancelled.bind(this, props)}>Simulate Ride Cancelled</button>
       </div>
     </div>
   )
