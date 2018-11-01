@@ -55,7 +55,7 @@ class DriverWait extends Component {
       () => socket.emit('EmitRideAssigned')
     )
     socket.on('rideAssigned', rideDetails => { // sets state in main component and redirects once done
-      this.props.setRideDetailsState(rideDetails, () => this.props.history.push('/driver/driverRequested'))
+      this.props.setRideDetailsState(rideDetails)
     })
   }
   componentWillUnmount () {
