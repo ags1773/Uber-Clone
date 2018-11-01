@@ -40,27 +40,27 @@ class Driver extends Component {
       status: 'rideAssign'
     })
   }
-  setMapState (obj, callback) {
+  setMapState (obj) {
     this.setState({
+      status: 'driverMap1',
       mapRenderData: obj
-    }, callback)
+    })
   }
 
   render () {
-    return (
-      this.state.status === 'waiting'
-        ? <DriverWait socket={this.props.socket} driverID={this.state.driver._id} setRideDetailsState={this.setRideDetailsState.bind(this)} />
-        : this.state.status === 'rideAssign'
-          ? <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
-          : null
-    )
+    let component
+    switch (this.state.status) {
+      case 'waiting':
+        component = <DriverWait socket={this.props.socket} driverID={this.state.driver._id} setRideDetailsState={this.setRideDetailsState.bind(this)} />
+        break
+      case 'rideAssign':
+        component = <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
+        break
+      case 'driverMap1':
+        component = <DriverMap mapRenderData={this.state.mapRenderData} />
+    }
+    return component
   }
 }
 
 export default Driver
-
-
-{/* <Route exact path='/driver' render={(props) => <DriverWait {...props} socket={socket} driverID={tempDriverID} setRideDetailsState={this.setRideDetailsState.bind(this)} />} />
-<Route path='/driver/driverRequested' render={props => <DriverRequested {...props} socket={socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} />} />
-<Route path='/driver/map' render={props => <DriverMap {...props} mapRenderData={this.state.mapRenderData} />} /> */}
-     

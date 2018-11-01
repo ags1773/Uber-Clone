@@ -2,7 +2,6 @@ const DriverModel = require('./models/driver')
 const sockets = {drivers: {}, users: {}}
 const driverWaitTimeout = 2 * 60 // seconds
 
-console.log('BEFORE Everything >>', sockets)
 module.exports = function (socket) {
   console.log(`[server] ${socket.id} connected`)
   let id, type // id is mongoID, not socketID
