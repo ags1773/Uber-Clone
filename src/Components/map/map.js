@@ -24,17 +24,12 @@ class Map extends Component {
   }
 
   componentWillReceiveProps (props) {
-    // display travel route
-    // if (!this.isEmpty(this.props.origin) && !this.isEmpty(this.props.destination)) {
-    console.log('$$$ >>', props)
     this.setState({
       userPos: props.userPos,
       origin: props.origin,
       destination: props.destination,
       drivers: props.drivers
     })
-    map.setCenter(props.origin)
-    console.log('Map props >>', props)
     if (this.isValid(this.state.origin) && this.isValid(this.state.destination)) {
       directionsDisplay.setMap(map)
       directionsService.route({
@@ -77,12 +72,6 @@ class Map extends Component {
     })
     return flag
   }
-  // isEmpty (obj) {
-  //   if (obj) {
-  //     return Object.keys(obj).length === 0 && obj.constructor === Object
-  //   }
-  //   return true
-  // }
 
   render () {
     return (

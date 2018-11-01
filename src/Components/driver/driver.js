@@ -20,7 +20,6 @@ class Driver extends Component {
         return res.json()
       })
       .then(driver => {
-        console.log('DRIVER ', driver)
         this.setState({driver: driver})
         this.props.onLogin(driver)
       })
@@ -45,7 +44,7 @@ class Driver extends Component {
   render () {
     return (
       this.state.status === 'waiting'
-        ? <DriverWait socket={this.props.socket} driverID='ffgsfgdfgd' setRideDetailsState={this.setRideDetailsState.bind(this)} />
+        ? <DriverWait socket={this.props.socket} driverID={this.state.driver._id} setRideDetailsState={this.setRideDetailsState.bind(this)} />
         : this.state.status === 'rideAssign'
           ? <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} />
           : null
