@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import UserHome from './userHome/userHome'
 import FindRide from './findRide/findRide'
+import WaitingForDriver from './waitingForDriver/waitingForDriver'
 
 class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'renderHome'
+      status: 'waitingForDriver'
     }
   }
 
@@ -33,6 +34,11 @@ class User extends Component {
         break
       case 'findRide':
         component = <FindRide />
+        break
+      case 'waitingForDriver':
+        component = <WaitingForDriver
+          origin={{lat: 12.9615, lng: 77.6442}}
+          destination={{lat: 12.9793, lng: 77.6406}} />
         break
     }
     return component
