@@ -31,7 +31,7 @@ class User extends Component {
       case 'renderHome':
         component = <UserHome socket={this.props.socket} />
         break
-      case 'waitingForDriver':
+      case 'findRide':
         component = <FindRide />
         break
     }
