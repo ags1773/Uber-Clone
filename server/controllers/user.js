@@ -2,6 +2,7 @@ const {userLoginUrl, oauth2UserClient, oauth2User} = require('../OAuth')
 const mongoose = require('mongoose')
 const Users = require('../models/user')
 const Drivers = require('../models/driver')
+const config = require('../config')
 
 exports.getLoginUrl = (req, res) => {
   res.status(200).json({url: userLoginUrl})
@@ -31,7 +32,7 @@ exports.handleAuth = (req, res) => {
 
 exports.findDrivers = (req, res) => {
   console.log('USERLOC', req.body.userLoc)
-  Drivers.findDriversWithin(req.body.userLoc, 50000)
+  Drivers.findDriversWithin(req.body.userLoc, config.findDriverDistance)
     .then(drivers => res.status(200).json(drivers))
     .catch(err => res.status(500).json(err))
 }
