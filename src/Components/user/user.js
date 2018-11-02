@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import UserHome from './userHome/userHome'
+import FindRide from './findRide/findRide'
 
 class User extends Component {
   constructor (props) {
@@ -29,6 +30,9 @@ class User extends Component {
     switch (this.state.status) {
       case 'renderHome':
         component = <UserHome socket={this.props.socket} />
+        break
+      case 'waitingForDriver':
+        component = <FindRide />
         break
     }
     return component
