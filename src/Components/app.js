@@ -4,7 +4,7 @@ import config from '../config'
 import NavBar from './navBar/navBar'
 import Main from './main'
 
-const script = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}`
+const script = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&libraries=places`
 function loadScript (src) {
   return new Promise((resolve, reject) => {
     let script = document.createElement('script')
