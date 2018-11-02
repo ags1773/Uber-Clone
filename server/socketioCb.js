@@ -1,7 +1,7 @@
 const DriverModel = require('./models/driver')
 const config = require('./config')
 const sockets = {drivers: {}, users: {}}
-const driverWaitTimeout = 2 * 60 // seconds
+const driverWaitTimeout = 10 // seconds
 
 module.exports = function (socket) {
   console.log(`[server] ${socket.id} connected`)
@@ -33,12 +33,17 @@ module.exports = function (socket) {
       })
   })
   socket.on('findRide', details => {
+    // const timeoutId = []
     DriverModel.findDriversWithin(
       [details.userPosition.lng, details.userPosition.lat],
       config.findDriverDistance
     )
       .then(drivers => {
         console.log('Newly found drivers => ', drivers)
+        // if (drivers.length === 0) {
+        //   socket.emit('driversNotAvailable')
+        // }
+        // timeoutId[0] = setTimeout(() => socket.emit('driversNotAvailable'), driverWaitTimeout)
         const driversIds = drivers.map(e => e._id)
         const driverSockets = driversIds.map(e => {
           if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
@@ -46,7 +51,7 @@ module.exports = function (socket) {
         })
         driverSockets.forEach((driverSocket, i) => {
           driverSocket.emit('rideAssigned', details)
-          // setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
+          // timeoutId[1] = setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
           driverSocket.on('rideAccepted', () => {
             setDiverIsOnline(false, driversIds[i], () => {
               driversIds.splice(i, 1)
@@ -96,7 +101,4 @@ function setDiverIsOnline (val, driverID, callback) {
         if (callback) callback()
       }
     })
-}
-function getDrivers () {
-
 }
