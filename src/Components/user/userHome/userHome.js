@@ -53,7 +53,7 @@ class User extends Component {
       },
       body: JSON.stringify(data)
     }
-    fetch('/api/user/findDrivers', myInit)
+    fetch('/api/user/findDrivers', myInit) // just shows all cabs near user..has no other use
       .then(result => {
         return result.json()
       })
@@ -66,9 +66,8 @@ class User extends Component {
   }
 
   findRide () {
-    if (this.state.drivers.length && this.state.userPos.lat && this.state.userPos.lng && this.state.drivers && this.state.destination) {
+    if (this.state.userPos.lat && this.state.userPos.lng && this.state.origin && this.state.destination) {
       const payload = {
-        drivers: this.state.drivers,
         origin: this.state.origin,
         destination: this.state.destination,
         userPosition: this.state.userPos

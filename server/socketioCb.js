@@ -1,4 +1,5 @@
 const DriverModel = require('./models/driver')
+const config = require('./config')
 const sockets = {drivers: {}, users: {}}
 const driverWaitTimeout = 2 * 60 // seconds
 
@@ -32,23 +33,33 @@ module.exports = function (socket) {
       })
   })
   socket.on('findRide', details => {
-    const driversIds = details.drivers.map(e => e._id)
-    const driverSockets = driversIds.map(e => {
-      if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-      else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
-    })
-    driverSockets.forEach((driverSocket, i) => {
-      driverSocket.emit('rideAssigned', details)
-      // setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
-      driverSocket.on('rideAccepted', () => {
-        driversIds.splice(i, 1)
-        const newDriverSockets = driversIds.map(e => {
+    DriverModel.findDriversWithin(
+      [details.userPosition.lng, details.userPosition.lat],
+      config.findDriverDistance
+    )
+      .then(drivers => {
+        console.log('Newly found drivers => ', drivers)
+        const driversIds = drivers.map(e => e._id)
+        const driverSockets = driversIds.map(e => {
           if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
           else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
         })
-        newDriverSockets.forEach(s => s.emit('rideCancelled'))
+        driverSockets.forEach((driverSocket, i) => {
+          driverSocket.emit('rideAssigned', details)
+          // setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
+          driverSocket.on('rideAccepted', () => {
+            setDiverIsOnline(false, driversIds[i], () => {
+              driversIds.splice(i, 1)
+              const newDriverSockets = driversIds.map(e => {
+                if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+                else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+              })
+              newDriverSockets.forEach(s => s.emit('rideCancelled'))
+            })
+          })
+        })
       })
-    })
+      .catch(e => console.error(e))
   })
 
   socket.on('disconnect', () => {
@@ -73,13 +84,19 @@ module.exports = function (socket) {
   // ------ Test Stuff END -------
 }
 
-function setDiverIsOnline (val, driverID) {
+function setDiverIsOnline (val, driverID, callback) {
   DriverModel.updateDriver(driverID,
     {
       isOnline: val
     },
     (err, result) => {
       if (err) console.log('[server] Error while updating driver isOnline in DB')
-      else console.log(`[server] ${driverID} Driver isOnline => ${val}`)
+      else {
+        console.log(`[server] ${driverID} Driver isOnline => ${val}`)
+        if (callback) callback()
+      }
     })
+}
+function getDrivers () {
+
 }
