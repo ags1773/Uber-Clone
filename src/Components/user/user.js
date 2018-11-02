@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import UserHome from './userHome/userHome'
 import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
@@ -7,7 +7,7 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'waitingForDriver'
+      status: 'renderHome'
     }
   }
 
@@ -34,6 +34,12 @@ class User extends Component {
         break
       case 'findRide':
         component = <FindRide />
+        break
+      case 'noDrivers':
+        component = <Fragment>
+          <p>No drivers found! Please try again!!</p>
+          <UserHome socket={this.props.socket} />
+        </Fragment>
         break
       case 'waitingForDriver':
         component = <WaitingForDriver
