@@ -13,7 +13,7 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'renderHome'
+      status: 'waitingForDriver'
     }
   }
 
@@ -45,7 +45,10 @@ class User extends Component {
         break
       case 'noDrivers':
         component = <Fragment>
-          <p>No drivers found! Please try again!!</p>
+          <div class='notification is-danger'>
+            <button class='delete' onClick={() => this.setState({ status: 'renderHome' })} />
+            No drivers found! Please try again!!
+          </div>
           <UserHome socket={this.props.socket} />
         </Fragment>
         break

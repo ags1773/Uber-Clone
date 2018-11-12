@@ -44,8 +44,14 @@ class WaitingForDriver extends Component {
   render () {
     return (
       <Fragment>
-        <p>Distance: {this.state.distance}</p>
-        <p>Duration: {this.state.duration}</p>
+        <div class='level'>
+          <div class='level-item'>
+            <p class='title'>Distance: {this.state.distance}</p>
+          </div>
+          <div class='level-item'>
+            <p class='title'>Duration: {this.state.duration}</p>
+          </div>
+        </div>
         <Map
           origin={this.state.origin}
           destination={this.state.destination}
