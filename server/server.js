@@ -19,7 +19,7 @@ const userRoutes = require('./routes/user')
 const driverRoutes = require('./routes/driver')
 const rideRoutes = require('./routes/ride')
 
-mongoose.connect(`${process.env.dbURI}`, { useNewUrlParser: true })
+mongoose.connect(`${process.env.dbURI}`, { useCreateIndex: true, useNewUrlParser: true })
 
 if (process.env.MODE === 'development') {
   const morgan = require('morgan')
@@ -39,8 +39,6 @@ app.use(session({
 
 app.use('/user', authenticateUser, express.static(path.join(__dirname, '..', 'dist')))
 app.use('/driver', authenticateDriver, express.static(path.join(__dirname, '..', 'dist')))
-// app.use('/profile', express.static(path.join(__dirname, '..', 'dist')))
-// app.use('/api/profile', (req, res) => res.redirect('/profile'))
 app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)
