@@ -2,7 +2,11 @@ import React, {Component, Fragment} from 'react'
 import client from 'socket.io-client'
 import config from '../config'
 import NavBar from './navBar/navBar'
-import Main from './main'
+import {Route} from 'react-router-dom'
+import LoginPage from './LoginPage/LoginPage'
+import User from './user/user'
+import Driver from './driver/driver'
+import Profile from './profile/profile'
 
 const script = `https://maps.googleapis.com/maps/api/js?key=${process.env.API_KEY}&libraries=places`
 function loadScript (src) {
@@ -44,9 +48,11 @@ class App extends Component {
     if (this.state.scriptLoaded) {
       return (
         <Fragment>
-          <NavBar user={this.state.loggedInCustomer} />
-          <Main socket={this.state.socket}
-            onCustomerLogin={customer => { this.getCustomer(customer) }} />
+          <Route path='/' render={() => <NavBar user={this.state.loggedInCustomer} />} />
+          <Route exact path='/' render={props => <LoginPage {...props} />} />
+          <Route exact path='/user' render={props => <User {...props} socket={this.state.socket} onLogin={customer => { this.getCustomer(customer) }} />} />
+          <Route exact path='/driver' render={props => <Driver {...props} socket={this.state.socket} onLogin={customer => { this.getCustomer(customer) }} />} />
+          <Route exact path='/profile' render={() => <Profile user={this.state.loggedInCustomer} />} />
         </Fragment>
       )
     } else {

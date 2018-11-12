@@ -39,6 +39,8 @@ app.use(session({
 
 app.use('/user', authenticateUser, express.static(path.join(__dirname, '..', 'dist')))
 app.use('/driver', authenticateDriver, express.static(path.join(__dirname, '..', 'dist')))
+// app.use('/profile', express.static(path.join(__dirname, '..', 'dist')))
+// app.use('/api/profile', (req, res) => res.redirect('/profile'))
 app.use('/api/user', userRoutes)
 app.use('/api/driver', driverRoutes)
 app.use('/api/ride', rideRoutes)

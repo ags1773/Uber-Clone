@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 const imgStyle = {
   borderRadius: '50%'
@@ -44,9 +45,9 @@ class Navbar extends Component {
                 <img style={imgStyle} src={this.props.user.picture} />
               </a>
               <div className='navbar-dropdown is-right'>
-                <a className='navbar-item'>
+                <Link className='navbar-item' to='/profile'>
                   Profile
-                </a>
+                </Link>
                 <a className='navbar-item'>
                   Past Rides
                 </a>
