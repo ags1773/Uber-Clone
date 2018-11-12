@@ -27,7 +27,7 @@ class Navbar extends Component {
   render () {
     let displayUserNav = !this.isEmpty(this.props.user)
     return (
-      <nav className='navbar' role='navigation' aria-label='main navigation'>
+      <nav className='navbar is-link' role='navigation' aria-label='main navigation'>
         <div className='navbar-brand'>
           <a className='navbar-item' href='/'>
             <img src='https://res.cloudinary.com/dwecmtn7q/image/upload/v1539774801/uber_logo.jpg' />
