@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react'
+import './LoginPage.css'
 import UserLogin from '../userLogin/userLogin'
 
 class loginPage extends Component {
@@ -28,7 +29,7 @@ class loginPage extends Component {
   render () {
     return (
       <Fragment>
-        <div className='columns'>
+        <div className='columns' id='login'>
           <div className='column'>
             <UserLogin
               name='User'
