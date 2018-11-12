@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
-import InputBoxes from '../../inputBoxes'
+import './userHome.css'
+import InputBoxes from '../../inputBoxes/inputBoxes'
 import Map from '../../map/map'
 
 let watchId
@@ -82,10 +83,12 @@ class User extends Component {
   render () {
     return (
       <Fragment>
-        <InputBoxes
-          updateOriginDestination={this.updateOriginDestination.bind(this)}
-        />
-        <button onClick={this.findRide.bind(this)}>Find Ride</button>
+        <div class='level'>
+          <InputBoxes
+            updateOriginDestination={this.updateOriginDestination.bind(this)}
+          />
+          <button class='level-item button is-outlined' onClick={this.findRide.bind(this)}>Find Ride</button>
+        </div>
         <Map
           origin={this.state.origin}
           destination={this.state.destination}

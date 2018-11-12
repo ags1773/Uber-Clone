@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react'
+import './inputBoxes.css'
 
 function isValid (obj) {
   let flag = false
@@ -58,8 +59,12 @@ class inputBoxes extends Component {
   render () {
     return (
       <Fragment>
-        <input type='text' id='originInput' placeholder='Origin' />
-        <input type='text' id='destinationInput' placeholder='Destination' />
+        <div class='level-item'>
+          <input class='input' type='text' id='originInput' placeholder='Origin' />
+        </div>
+        <div class='level-item'>
+          <input class='input' type='text' id='destinationInput' placeholder='Destination' />
+        </div>
       </Fragment>
     )
   }

@@ -13,7 +13,7 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'trackRide'
+      status: 'renderHome'
     }
   }
 
