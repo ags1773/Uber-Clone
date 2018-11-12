@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react'
 import UserHome from './userHome/userHome'
 import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
+import Map from '../map/map'
 
 function setStatusAsFindRide () {
   this.setState({
@@ -12,7 +13,7 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'renderHome'
+      status: 'trackRide'
     }
   }
 
@@ -52,6 +53,12 @@ class User extends Component {
         component = <WaitingForDriver
           origin={{lat: 12.9615, lng: 77.6442}}
           destination={{lat: 12.9793, lng: 77.6406}} />
+        break
+      case 'trackRide':
+        component = <Map
+          origin={{lat: 12.9615, lng: 77.6442}}
+          destination={{lat: 12.9793, lng: 77.6406}}
+          userPos={{lat: 12.9615, lng: 77.6442}} />
         break
     }
     return component
