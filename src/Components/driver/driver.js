@@ -46,6 +46,11 @@ class Driver extends Component {
       mapRenderData: obj
     })
   }
+  startRide () {
+    this.setState({
+      status: 'onRide'
+    })
+  }
 
   render () {
     let component
@@ -64,7 +69,10 @@ class Driver extends Component {
           resetRideStatus={this.resetRideStatus.bind(this)} />
         break
       case 'driverToUserMap':
-        component = <DriverToUserMap socket={this.props.socket} mapRenderData={this.state.mapRenderData} />
+        component = <DriverToUserMap
+          socket={this.props.socket}
+          mapRenderData={this.state.mapRenderData}
+          startRide={this.startRide.bind(this)} />
         break
     }
     return component

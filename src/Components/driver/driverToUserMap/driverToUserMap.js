@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react'
+import './driverToUserMap.css'
 import Map from '../../map/map'
 import {intervalFunction} from '../../../helperFunctions'
 import config from '../../../config'
@@ -34,6 +35,15 @@ class DriverToUserMap extends Component {
   render () {
     return (
       <Fragment>
+        <div class='container' id='driverToUserMap'>
+          <div class='content'>
+            <p class='is-size-3 has-text-centered has-text-dark is-uppercase'>Rider pickup!</p>
+            <p><strong>Pickup Address: </strong>{this.props.mapRenderData.userAddress}</p>
+          </div>
+          <div class='control'>
+            <button class='button is-dark' onClick={this.props.startRide}>Start Ride</button>
+          </div>
+        </div>
         <Map
           userPos={this.props.mapRenderData.userPos}
           origin={this.props.mapRenderData.origin}

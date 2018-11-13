@@ -13,7 +13,8 @@ function rideAccepted (props) { // set map origin destination & render map compo
         const obj = { // origin => driver's location, destination => user's location
           origin: {lat: crd.latitude, lng: crd.longitude},
           destination: {lat: props.rideDetails.origin.lat, lng: props.rideDetails.origin.lng},
-          userPos: {lat: crd.latitude, lng: crd.longitude}
+          userPos: {lat: crd.latitude, lng: crd.longitude},
+          userAddress: props.rideDetails.destination.address
         }
         props.setMapState(obj)
       } else console.log(`Driver's location inaccurate... Accuracy = ${crd.accuracy}, threshold = ${config.driverMinAccuracy}`)
