@@ -51,10 +51,17 @@ class Driver extends Component {
     let component
     switch (this.state.status) {
       case 'waiting':
-        component = <DriverWait socket={this.props.socket} driverID={this.state.driver._id} setRideDetailsState={this.setRideDetailsState.bind(this)} />
+        component = <DriverWait
+          socket={this.props.socket}
+          driverID={this.state.driver._id}
+          setRideDetailsState={this.setRideDetailsState.bind(this)} />
         break
       case 'rideAssign':
-        component = <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
+        component = <DriverRequested
+          socket={this.props.socket}
+          rideDetails={this.state.rideDetails}
+          setMapState={this.setMapState.bind(this)}
+          resetRideStatus={this.resetRideStatus.bind(this)} />
         break
       case 'driverToUserMap':
         component = <DriverToUserMap socket={this.props.socket} mapRenderData={this.state.mapRenderData} />
