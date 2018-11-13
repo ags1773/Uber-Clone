@@ -13,8 +13,10 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'renderHome'
+      status: 'renderHome',
+      user: {}
     }
+    this.props.socket.on('driverLocation', payload => console.log('Driver pos recvd ', payload))
   }
 
   // ---- Lifecycle Hooks ----
@@ -25,6 +27,7 @@ class User extends Component {
       })
       .then(user => {
         this.setState({user: user})
+        this.props.socket.emit('userType', 'user', user._id)
         this.props.onLogin(user)
       })
       .catch(err => {
@@ -38,7 +41,7 @@ class User extends Component {
     let component
     switch (this.state.status) {
       case 'renderHome':
-        component = <UserHome socket={this.props.socket} setStatusAsFindRide={setStatusAsFindRide.bind(this)} />
+        component = <UserHome socket={this.props.socket} userId={this.state.user._id} setStatusAsFindRide={setStatusAsFindRide.bind(this)} />
         break
       case 'findRide':
         component = <FindRide />

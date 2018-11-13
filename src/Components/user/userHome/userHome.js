@@ -73,7 +73,7 @@ class User extends Component {
         destination: this.state.destination,
         userPosition: this.state.userPos
       }
-      socket.emit('findRide', payload)
+      socket.emit('findRide', payload, this.props.userId)
       this.props.setStatusAsFindRide()
     } else {
       console.log(`Can't find ride right now`)

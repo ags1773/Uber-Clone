@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import DriverWait from './driverWait/driverWait'
 import DriverRequested from './driverRequested/driverRequested'
 import DriverToUserMap from './driverToUserMap/driverToUserMap'
-import Map from '../map/map'
 
 class Driver extends Component {
   constructor (props) {
@@ -11,7 +10,8 @@ class Driver extends Component {
       status: 'waiting',
       rideDetails: {},
       mapRenderData: {},
-      driver: {}
+      driver: {},
+      userId: ''
     }
   }
 
@@ -35,16 +35,15 @@ class Driver extends Component {
       rideDetails: {}
     })
   }
-  setRideDetailsState (rideDetails) {
+  setRideDetailsState (rideDetails, userId) {
     this.setState({
       rideDetails: rideDetails,
+      userId: userId,
       status: 'rideAssign'
     })
   }
   setMapState (obj) {
-    console.log('MAP RENDER DATA :', obj)
     this.setState({
-      // status: 'driverMap1',
       status: 'driverToUserMap',
       mapRenderData: obj
     })
@@ -59,15 +58,8 @@ class Driver extends Component {
       case 'rideAssign':
         component = <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
         break
-      // case 'driverMap1':
-      //   component = <Map
-      //     userPos={this.state.mapRenderData.userPos}
-      //     origin={this.state.mapRenderData.origin}
-      //     destination={this.state.mapRenderData.destination}
-      //   />
-      //   break
       case 'driverToUserMap':
-        component = <DriverToUserMap socket={this.props.socket} driverID={this.state.driver._id} mapRenderData={this.state.mapRenderData} />
+        component = <DriverToUserMap socket={this.props.socket} userID={this.state.userId} driverID={this.state.driver._id} mapRenderData={this.state.mapRenderData} />
         break
     }
     return component

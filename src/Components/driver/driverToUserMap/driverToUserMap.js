@@ -2,15 +2,14 @@ import React, {Component, Fragment} from 'react'
 import Map from '../../map/map'
 import {intervalFunction} from '../../../helperFunctions'
 import config from '../../../config'
-let socket, driverID
-const tempArr = [] // Delete me later
+let socket, driverID, userID
 
 function relayDriverLocToUser (lat, lng) { // callback to intervalFunction
   const payload = {
     id: driverID,
     position: [lat, lng]
   }
-  socket.emit('relayDriverPosition', JSON.stringify(payload))
+  socket.emit('relayDriverPosition', JSON.stringify(payload), userID)
 }
 
 class DriverToUserMap extends Component {
@@ -19,11 +18,12 @@ class DriverToUserMap extends Component {
     this.state = {}
     socket = this.props.socket
     driverID = this.props.driverID
+    userID = this.props.userID
   }
   componentWillMount () {
-    this.setId = setInterval(intervalFunction.bind(this, relayDriverLocToUser), config.driverCoordBroadcastTimeout * 1000)
     this.prevLat = 0
     this.prevLng = 0
+    this.setId = setInterval(intervalFunction.bind(this, relayDriverLocToUser), config.driverCoordBroadcastTimeout * 1000)
   }
   componentWillUnmount () {
     clearInterval(this.setId)
@@ -36,7 +36,6 @@ class DriverToUserMap extends Component {
           userPos={this.props.mapRenderData.userPos}
           origin={this.props.mapRenderData.origin}
           destination={this.props.mapRenderData.destination}
-          drivers={tempArr}
         />
       </Fragment>
     )
@@ -44,9 +43,3 @@ class DriverToUserMap extends Component {
 }
 
 export default DriverToUserMap
-
-{/* <Map
-  userPos={this.props.mapRenderData.userPos}
-  origin={this.props.mapRenderData.origin}
-  destination={this.props.mapRenderData.destination}
-/> */}

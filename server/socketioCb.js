@@ -1,7 +1,7 @@
 const DriverModel = require('./models/driver')
 const config = require('./config')
 const sockets = {drivers: {}, users: {}}
-const driverWaitTimeout = 10 // seconds
+// const driverWaitTimeout = 10 // seconds
 
 module.exports = function (socket) {
   console.log(`[server] ${socket.id} connected`)
@@ -32,7 +32,7 @@ module.exports = function (socket) {
         else console.log('[server] Driver position updated successfully in DB!')
       })
   })
-  socket.on('findRide', details => {
+  socket.on('findRide', (details, userId) => {
     // const timeoutId = []
     DriverModel.findDriversWithin(
       [details.userPosition.lng, details.userPosition.lat],
@@ -50,7 +50,7 @@ module.exports = function (socket) {
           else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
         })
         driverSockets.forEach((driverSocket, i) => {
-          driverSocket.emit('rideAssigned', details)
+          driverSocket.emit('rideAssigned', details, userId)
           // timeoutId[1] = setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
           driverSocket.on('rideAccepted', () => {
             setDiverIsOnline(false, driversIds[i], () => {
@@ -65,6 +65,12 @@ module.exports = function (socket) {
         })
       })
       .catch(e => console.error(e))
+  })
+  socket.on('relayDriverPosition', (driverPos, userId) => {
+    console.log('[SERVER] relayDriverPosition recvd at backend >>', driverPos, userId)
+    if (sockets.users.hasOwnProperty(userId)) {
+      sockets.users[userId].emit('driverLocation', driverPos)
+    } else console.error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
   })
 
   socket.on('disconnect', () => {
