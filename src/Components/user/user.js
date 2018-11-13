@@ -13,7 +13,8 @@ class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: 'renderHome'
+      status: 'renderHome',
+      user: {}
     }
   }
 
@@ -38,7 +39,10 @@ class User extends Component {
     let component
     switch (this.state.status) {
       case 'renderHome':
-        component = <UserHome socket={this.props.socket} setStatusAsFindRide={setStatusAsFindRide.bind(this)} />
+        component = <UserHome
+          socket={this.props.socket}
+          setStatusAsFindRide={setStatusAsFindRide.bind(this)}
+          user={this.state.user} />
         break
       case 'findRide':
         component = <FindRide />
@@ -49,7 +53,10 @@ class User extends Component {
             <button class='delete' onClick={() => this.setState({ status: 'renderHome' })} />
             No drivers found! Please try again!!
           </div>
-          <UserHome socket={this.props.socket} />
+          <UserHome
+            socket={this.props.socket}
+            setStatusAsFindRide={setStatusAsFindRide.bind(this)}
+            user={this.state.user} />
         </Fragment>
         break
       case 'waitingForDriver':
