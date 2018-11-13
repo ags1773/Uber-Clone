@@ -19,13 +19,13 @@ class DriverWait extends Component {
     driverID = this.props.driverID
   }
   componentWillMount () {
-    this.setId = setInterval(intervalFunction.bind(this, transmitDriverLocToServer), config.driverCoordBroadcastTimeout * 1000)
     this.prevLat = 0
     this.prevLng = 0
+    this.setId = setInterval(intervalFunction.bind(this, transmitDriverLocToServer), config.driverCoordBroadcastTimeout * 1000)
   }
   componentDidMount () {
-    socket.on('rideAssigned', rideDetails => { // sets state in main component and redirects once done
-      this.props.setRideDetailsState(rideDetails)
+    socket.on('rideAssigned', (rideDetails, userId) => { // sets state in main component and redirects once done
+      this.props.setRideDetailsState(rideDetails, userId)
     })
   }
   componentWillUnmount () {
