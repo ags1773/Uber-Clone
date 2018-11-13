@@ -3,18 +3,28 @@ import UserHome from './userHome/userHome'
 import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
 import Map from '../map/map'
+import FinishRide from './finishRide/finishRide'
+import {findDistance} from '../../helperFunctions'
 
-function setStatusAsFindRide () {
+async function setStatusAsFindRide (origin, destination) {
+  let distance = await findDistance(origin, destination)
+  let price = calculatePrice(distance)
   this.setState({
-    status: 'findRide'
+    status: 'findRide',
+    price
   })
+}
+
+function calculatePrice (distance) {
+  return 40 + (distance > 4 ? (distance - 4) * 15 : 0)
 }
 class User extends Component {
   constructor (props) {
     super(props)
     this.state = {
       status: 'renderHome',
-      user: {}
+      user: {},
+      price: 0
     }
     this.props.socket.on('driverLocation', payload => console.log('Driver pos recvd ', payload))
   }
@@ -71,6 +81,9 @@ class User extends Component {
           origin={{lat: 12.9615, lng: 77.6442}}
           destination={{lat: 12.9793, lng: 77.6406}}
           userPos={{lat: 12.9615, lng: 77.6442}} />
+        break
+      case 'finishRide':
+        component = <FinishRide price={this.state.price} />
         break
     }
     return component
