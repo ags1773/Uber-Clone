@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import DriverWait from './driverWait/driverWait'
 import DriverRequested from './driverRequested/driverRequested'
 import DriverToUserMap from './driverToUserMap/driverToUserMap'
+import OnRide from './onRide/onRide'
+import EndRide from './endRide/endRide'
 
 class Driver extends Component {
   constructor (props) {
@@ -51,6 +53,11 @@ class Driver extends Component {
       status: 'onRide'
     })
   }
+  endRide () {
+    this.setState({
+      status: 'endRide'
+    })
+  }
 
   render () {
     let component
@@ -74,6 +81,17 @@ class Driver extends Component {
           mapRenderData={this.state.mapRenderData}
           startRide={this.startRide.bind(this)} />
         break
+      case 'onRide':
+        component = <OnRide
+          socket={this.props.socket}
+          mapRenderData={this.state.mapRenderData}
+          endRide={this.endRide.bind(this)} />
+        break
+      case 'endRide':
+        component = <EndRide
+          socket={this.props.socket}
+          mapRenderData={this.state.mapRenderData}
+          resetRideStatus={this.resetRideStatus.bind(this)} />
     }
     return component
   }
