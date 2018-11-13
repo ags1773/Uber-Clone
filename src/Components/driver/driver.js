@@ -10,8 +10,7 @@ class Driver extends Component {
       status: 'waiting',
       rideDetails: {},
       mapRenderData: {},
-      driver: {},
-      userId: ''
+      driver: {}
     }
   }
 
@@ -58,7 +57,7 @@ class Driver extends Component {
         component = <DriverRequested socket={this.props.socket} rideDetails={this.state.rideDetails} setMapState={this.setMapState.bind(this)} resetRideStatus={this.resetRideStatus.bind(this)} />
         break
       case 'driverToUserMap':
-        component = <DriverToUserMap socket={this.props.socket} userID={this.state.userId} driverID={this.state.driver._id} mapRenderData={this.state.mapRenderData} />
+        component = <DriverToUserMap socket={this.props.socket} mapRenderData={this.state.mapRenderData} />
         break
     }
     return component

@@ -54,7 +54,7 @@ module.exports = function (socket) {
           driverSocket.on('rideAccepted', () => {
             // console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
             if (sockets.users.hasOwnProperty(userId)) {
-              gotUserSocket(sockets.users[userId], driverSocket) // !!IMP clear userSocket when ride is over
+              gotUserSocket(sockets.users[userId], driverSocket)
             } else console.error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
             setDiverIsOnline(false, driversIds[i], () => {
               driversIds.splice(i, 1)
@@ -94,6 +94,7 @@ function setDiverIsOnline (val, driverID, callback) {
     })
 }
 function gotUserSocket (userSocket, driverSocket) {
+  userSocket.emit('driverAssigned')
   driverSocket.on('relayDriverPosition', driverPos => {
     console.log('Relaying driver pos...')
     userSocket.emit('driverLocation', driverPos)
