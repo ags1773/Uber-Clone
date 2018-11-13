@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import Map from '../../map/map'
+import {findDistance} from '../../../helperFunctions'
 
 class WaitingForDriver extends Component {
   constructor (props) {
@@ -10,36 +11,20 @@ class WaitingForDriver extends Component {
       origin: this.props.origin,
       destination: this.props.destination
     }
-    this.findDistance = this.findDistance.bind(this)
+    this.updateDistance = this.updateDistance.bind(this)
   }
-  findDistance () {
-    let service = new google.maps.DistanceMatrixService()
-    let callback = (response, status) => {
-      if (status !== 'OK') {
-        console.log('INVALID REQUEST')
-        return
-      }
-      let distance = response.rows[0].elements[0].distance.text
-      let duration = response.rows[0].elements[0].duration.text
-      this.setState({
-        distance,
-        duration
-      })
-    }
-    service.getDistanceMatrix({
-      origins: [this.state.origin],
-      destinations: [this.state.destination],
-      travelMode: 'DRIVING'
-    }, callback)
+  async updateDistance () {
+    let {distance, duration} = await findDistance(this.state.origin, this.state.destination)
+    this.setState({distance, duration})
   }
   componentWillMount () {
-    this.findDistance()
+    this.updateDistance()
   }
   componentWillReceiveProps (props) {
     this.setState({
       origin: props.origin,
       destination: props.destination
-    }, this.findDistance)
+    }, this.updateDistance)
   }
   render () {
     return (

@@ -53,3 +53,22 @@ export function intervalFunction (callback) {
     })
     .catch(e => console.log('Error getting driver location ', e))
 }
+
+export function findDistance (origin, destination) {
+  let service = new google.maps.DistanceMatrixService()
+  let callback = (response, status, resolve, reject) => {
+    if (status !== 'OK') {
+      reject('INVALID REQUEST')
+    }
+    let distance = response.rows[0].elements[0].distance.text
+    let duration = response.rows[0].elements[0].duration.text
+    resolve({distance, duration})
+  }
+  return new Promise((resolve, reject) => {
+    service.getDistanceMatrix({
+      origins: [origin],
+      destinations: [destination],
+      travelMode: 'DRIVING'
+    }, (response, status) => callback(response, status, resolve, reject))
+  })
+}
