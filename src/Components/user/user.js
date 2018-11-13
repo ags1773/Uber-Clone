@@ -4,7 +4,8 @@ import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
 import Map from '../map/map'
 import FinishRide from './finishRide/finishRide'
-import {findDistance} from '../../helperFunctions'
+import {findDistance, getCurrLocation} from '../../helperFunctions'
+import config from '../../config'
 
 async function setStatusAsFindRide (origin, destination) {
   let distance = await findDistance(origin, destination)
@@ -26,7 +27,24 @@ class User extends Component {
       user: {},
       price: 0
     }
-    this.props.socket.on('driverLocation', payload => console.log('Driver pos recvd ', payload))
+    this.props.socket.on('driverAssigned', () => {
+      getCurrLocation()
+        .then(pos => {
+          let crd = pos.coords
+          if (crd.accuracy <= config.driverMinAccuracy) {
+            this.setState({
+              status: 'waitingForDriver',
+              destination: {lat: crd.latitude, lng: crd.longitude}
+            })
+          } else throw new Error('User position is inaccurate')
+        })
+        .catch(e => console.log('Could not get user location ', e))
+    })
+    this.props.socket.on('driverLocation', driverPos => {
+      this.setState({
+        origin: {lat: driverPos.lat, lng: driverPos.lng}
+      })
+    })
   }
 
   // ---- Lifecycle Hooks ----
@@ -72,9 +90,11 @@ class User extends Component {
         </Fragment>
         break
       case 'waitingForDriver':
-        component = <WaitingForDriver
-          origin={{lat: 12.9615, lng: 77.6442}}
-          destination={{lat: 12.9793, lng: 77.6406}} />
+        component = this.state.origin && this.state.destination
+          ? <WaitingForDriver
+            origin={{lat: this.state.origin.lat, lng: this.state.origin.lng}} // driver's live position
+            destination={{lat: this.state.destination.lat, lng: this.state.destination.lng}} /> // user's static position
+          : <h1>Please Wait...</h1>
         break
       case 'trackRide':
         component = <Map
