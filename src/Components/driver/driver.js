@@ -35,10 +35,9 @@ class Driver extends Component {
       rideDetails: {}
     })
   }
-  setRideDetailsState (rideDetails, userId) {
+  setRideDetailsState (rideDetails) {
     this.setState({
       rideDetails: rideDetails,
-      userId: userId,
       status: 'rideAssign'
     })
   }

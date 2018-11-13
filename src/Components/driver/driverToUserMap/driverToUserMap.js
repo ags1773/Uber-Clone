@@ -2,14 +2,14 @@ import React, {Component, Fragment} from 'react'
 import Map from '../../map/map'
 import {intervalFunction} from '../../../helperFunctions'
 import config from '../../../config'
-let socket, driverID, userID
+let socket, driverID
 
 function relayDriverLocToUser (lat, lng) { // callback to intervalFunction
   const payload = {
     id: driverID,
     position: [lat, lng]
   }
-  socket.emit('relayDriverPosition', JSON.stringify(payload), userID)
+  socket.emit('relayDriverPosition', JSON.stringify(payload))
 }
 
 class DriverToUserMap extends Component {
@@ -18,7 +18,6 @@ class DriverToUserMap extends Component {
     this.state = {}
     socket = this.props.socket
     driverID = this.props.driverID
-    userID = this.props.userID
   }
   componentWillMount () {
     this.prevLat = 0

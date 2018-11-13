@@ -63,8 +63,8 @@ class User extends Component {
         break
       case 'waitingForDriver':
         component = <WaitingForDriver
-          origin={{lat: 12.9615, lng: 77.6442}}
-          destination={{lat: 12.9793, lng: 77.6406}} />
+          origin={{lat: 12.9615, lng: 77.6442}} // driver's live position
+          destination={{lat: 12.9793, lng: 77.6406}} /> // user's static position
         break
       case 'trackRide':
         component = <Map
