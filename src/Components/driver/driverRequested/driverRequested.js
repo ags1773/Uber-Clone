@@ -31,14 +31,30 @@ function DriverRequested (props) {
   })
 
   return (
-    <div className='container' id='driverRequested'>
-      <p className='is-size-3 has-text-centered is-uppercase'>Ride request received!</p>
-      <p><strong>Name:</strong> {props.rideDetails.name}</p>
-      <p><strong>Origin:</strong> {props.rideDetails.origin.address}</p>
-      <p><strong>Destination:</strong> {props.rideDetails.destination.address}</p>
-      <div className='buttons'>
-        <button className='button is-dark' onClick={rideAccepted.bind(this, props)}>Accept</button>
-        <button className='button is-dark' onClick={rideDeclined.bind(this, props)}>Decline</button>
+    <div className='hero is-medium is-light is-bold' id='driverRequested'>
+      <div className='hero-head'>
+        <p className='is-size-3 has-text-centered has-text-dark is-uppercase'>Ride request received!</p>
+      </div>
+      <div className='hero-body'>
+        <div className='content is-medium has-text-dark'>
+          <p><strong>Name:</strong> {props.rideDetails.name}</p>
+          <p><strong>Origin:</strong> {props.rideDetails.origin.address}</p>
+          <p><strong>Destination:</strong> {props.rideDetails.destination.address}</p>
+        </div>
+      </div>
+      <div className='hero-foot'>
+        <div className='level'>
+          <div className='level-left'>
+            <div className='level-item'>
+              <button className='button is-dark' onClick={rideAccepted.bind(this, props)}>Accept</button>
+            </div>
+          </div>
+          <div className='level-right'>
+            <div className='level-item'>
+              <button className='button is-dark' onClick={rideDeclined.bind(this, props)}>Decline</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

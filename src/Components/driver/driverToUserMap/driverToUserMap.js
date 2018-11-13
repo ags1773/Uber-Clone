@@ -31,7 +31,6 @@ class DriverToUserMap extends Component {
   render () {
     return (
       <Fragment>
-        <h1>Driver To User Map => => =></h1>
         <Map
           userPos={this.props.mapRenderData.userPos}
           origin={this.props.mapRenderData.origin}

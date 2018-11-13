@@ -3,6 +3,7 @@
   background-color: black;
   display: flex;
   flex-direction: column;
+  margin-top: 1.5rem;
 }
 #driverWait .lds-ripple {
   margin: 0 auto;
