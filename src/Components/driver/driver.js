@@ -84,7 +84,7 @@ class Driver extends Component {
       case 'onRide':
         component = <OnRide
           socket={this.props.socket}
-          mapRenderData={this.state.mapRenderData}
+          mapRenderData={this.state.mapRenderData}// send destination address
           endRide={this.endRide.bind(this)} />
         break
       case 'endRide':

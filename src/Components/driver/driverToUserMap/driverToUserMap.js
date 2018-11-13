@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react'
-import './driverToUserMap.css'
 import Map from '../../map/map'
 import {intervalFunction} from '../../../helperFunctions'
 import config from '../../../config'
