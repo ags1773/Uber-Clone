@@ -41,14 +41,10 @@ class User extends Component {
     let component
     switch (this.state.status) {
       case 'renderHome':
-<<<<<<< HEAD
         component = <UserHome
           socket={this.props.socket}
           setStatusAsFindRide={setStatusAsFindRide.bind(this)}
           user={this.state.user} />
-=======
-        component = <UserHome socket={this.props.socket} userId={this.state.user._id} setStatusAsFindRide={setStatusAsFindRide.bind(this)} />
->>>>>>> driver
         break
       case 'findRide':
         component = <FindRide />
