@@ -45,7 +45,7 @@ module.exports = function (socket) {
         const driversIds = drivers.map(e => e._id)
         const driverSockets = driversIds.map(e => {
           if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-          else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+          else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
         })
         driverSockets.forEach((driverSocket, i) => {
           // driverSocket.emit('rideAssigned', details, userId)
@@ -55,12 +55,12 @@ module.exports = function (socket) {
             // console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
             if (sockets.users.hasOwnProperty(userId)) {
               gotUserSocket(sockets.users[userId], driverSocket)
-            } else console.error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
+            } else throw new Error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
             setDiverIsOnline(false, driversIds[i], () => {
               driversIds.splice(i, 1)
               const newDriverSockets = driversIds.map(e => {
                 if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-                else console.error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+                else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
               })
               newDriverSockets.forEach(s => s.emit('rideCancelled'))
             })
@@ -94,9 +94,9 @@ function setDiverIsOnline (val, driverID, callback) {
     })
 }
 function gotUserSocket (userSocket, driverSocket) {
-  userSocket.emit('driverAssigned')
   driverSocket.on('relayDriverPosition', driverPos => {
     console.log('Relaying driver pos...')
     userSocket.emit('driverLocation', driverPos)
   })
+  // userSocket.on()
 }

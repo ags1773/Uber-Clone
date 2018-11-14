@@ -66,7 +66,6 @@ class User extends Component {
   }
 
   findRide () {
-    console.log('USER ', this.state.user)
     if (this.state.userPos.lat && this.state.userPos.lng && this.state.origin && this.state.destination) {
       const payload = {
         name: this.props.user.name,

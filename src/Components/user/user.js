@@ -12,7 +12,9 @@ async function setStatusAsFindRide (origin, destination) {
   let price = calculatePrice(distance)
   this.setState({
     status: 'findRide',
-    price
+    price,
+    origin: origin,
+    destination: destination
   })
 }
 
@@ -27,22 +29,10 @@ class User extends Component {
       user: {},
       price: 0
     }
-    this.props.socket.on('driverAssigned', () => {
-      getCurrLocation()
-        .then(pos => {
-          let crd = pos.coords
-          if (crd.accuracy <= config.driverMinAccuracy) {
-            this.setState({
-              status: 'waitingForDriver',
-              destination: {lat: crd.latitude, lng: crd.longitude}
-            })
-          } else throw new Error('User position is inaccurate')
-        })
-        .catch(e => console.log('Could not get user location ', e))
-    })
     this.props.socket.on('driverLocation', driverPos => {
       this.setState({
-        origin: {lat: driverPos.lat, lng: driverPos.lng}
+        status: 'waitingForDriver',
+        destination: {lat: driverPos.lat, lng: driverPos.lng}
       })
     })
   }
@@ -90,11 +80,9 @@ class User extends Component {
         </Fragment>
         break
       case 'waitingForDriver':
-        component = this.state.origin && this.state.destination
-          ? <WaitingForDriver
-            origin={{lat: this.state.origin.lat, lng: this.state.origin.lng}} // driver's live position
-            destination={{lat: this.state.destination.lat, lng: this.state.destination.lng}} /> // user's static position
-          : <h1>Please Wait...</h1>
+        component = <WaitingForDriver
+          origin={{lat: this.state.origin.lat, lng: this.state.origin.lng}}
+          destination={{lat: this.state.destination.lat, lng: this.state.destination.lng}} />
         break
       case 'trackRide':
         component = <Map
