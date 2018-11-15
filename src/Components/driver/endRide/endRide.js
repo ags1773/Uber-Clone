@@ -1,24 +1,25 @@
 import React from 'react'
+import './endRide.css'
 
 export default function EndRide (props) {
   props.socket.emit('relayEndRide', props.price)
   return (
-    <div class='hero is-light is-bold'>
+    <div class='hero is-medium is-light is-bold' id='endRide'>
       <div class='hero-head'>
-        <p class='has-text-centered'>
+        <p class='is-size-3 has-text-centered has-text-dark is-uppercase'>
               End Ride!
         </p>
       </div>
       <div class='hero-body'>
         <div class='content'>
-          <p class='has-text-centered'>
-              User has to pay Rs.{props.price}!
+          <p class='is-size-5 has-text-centered has-text-dark'>
+              Collect <strong>Rs.{props.price}</strong> from the rider!
           </p>
         </div>
       </div>
       <div class='hero-foot'>
-        <div class='control'>
-          <button class='button is-dark' onClick={paymentRecieved.bind(null, props)}>Ok</button>
+        <div class='container'>
+          <button class='button is-dark' onClick={paymentRecieved.bind(null, props)}>OK</button>
         </div>
       </div>
     </div>
