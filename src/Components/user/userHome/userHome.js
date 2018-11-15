@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react'
 import './userHome.css'
 import InputBoxes from '../../inputBoxes/inputBoxes'
 import Map from '../../map/map'
+import {calculatePrice} from '../../../helperFunctions'
 
 let watchId
 let socket
@@ -19,7 +20,8 @@ class User extends Component {
       origin: {},
       destination: {},
       userPos: {lat: 12.9716, lng: 77.5946},
-      drivers: []
+      drivers: [],
+      price: 0
     }
     socket = this.props.socket
   }
@@ -27,10 +29,12 @@ class User extends Component {
   geoSuccess (position) {
     this.setState({userPos: {lat: position.coords.latitude, lng: position.coords.longitude}})
   }
-  updateOriginDestination (obj) {
+  async updateOriginDestination (obj) {
+    let price = await calculatePrice({lat: obj.origin.lat, lng: obj.origin.lng}, {lat: obj.destination.lat, lng: obj.destination.lng})
     this.setState({
       origin: obj.origin,
-      destination: obj.destination
+      destination: obj.destination,
+      price
     })
   }
 
@@ -89,6 +93,9 @@ class User extends Component {
           />
           <button class='level-item button is-outlined' onClick={this.findRide.bind(this)}>Find Ride</button>
         </div>
+        {this.state.price !== 0
+          ? <p>Estimated price: {this.state.price}</p>
+          : null}
         <Map
           origin={this.state.origin}
           destination={this.state.destination}

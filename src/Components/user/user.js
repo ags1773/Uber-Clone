@@ -4,13 +4,10 @@ import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
 import Map from '../map/map'
 import FinishRide from './finishRide/finishRide'
-import {calculatePrice} from '../../helperFunctions'
 
 async function setStatusAsFindRide (origin, destination) {
-  let price = await calculatePrice(origin, destination)
   this.setState({
     status: 'findRide',
-    price,
     origin: origin,
     destination: destination
   })
@@ -21,8 +18,7 @@ class User extends Component {
     super(props)
     this.state = {
       status: 'renderHome',
-      user: {},
-      price: 0
+      user: {}
     }
     this.props.socket.on('driverLocation', driverPos => {
       this.setState({
