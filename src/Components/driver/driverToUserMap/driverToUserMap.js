@@ -4,25 +4,29 @@ import {intervalFunction} from '../../../helperFunctions'
 import config from '../../../config'
 let socket
 
-function relayDriverLocToUser (lat, lng) { // callback to intervalFunction
-  const payload = {
-    lat: lat,
-    lng: lng
-  }
-  socket.emit('relayDriverPosition', payload)
-}
-
 class DriverToUserMap extends Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      origin: this.props.mapRenderData.origin,
+      destination: this.props.mapRenderData.destination
+    }
     socket = this.props.socket
     console.log('PROPS mapRenderData >>', this.props.mapRenderData)
   }
   componentWillMount () {
     this.prevLat = 0
     this.prevLng = 0
-    this.setId = setInterval(intervalFunction.bind(this, relayDriverLocToUser), config.driverCoordBroadcastTimeout * 1000)
+    this.setId = setInterval(intervalFunction.bind(this, (lat, lng) => {
+      this.setState({
+        origin: {lat: lat, lng: lng}
+      })
+      const payload = {
+        lat: lat,
+        lng: lng
+      }
+      socket.emit('relayDriverPosition', payload)
+    }), config.driverCoordBroadcastTimeout * 1000)
   }
   componentWillUnmount () {
     clearInterval(this.setId)
@@ -40,9 +44,8 @@ class DriverToUserMap extends Component {
           </div>
         </div>
         <Map
-          userPos={this.props.mapRenderData.userPos}
-          origin={this.props.mapRenderData.origin}
-          destination={this.props.mapRenderData.destination}
+          origin={this.state.origin}
+          destination={this.state.destination}
         />
       </Fragment>
     )

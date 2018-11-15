@@ -98,5 +98,7 @@ function gotUserSocket (userSocket, driverSocket) {
     console.log('Relaying driver pos...')
     userSocket.emit('driverLocation', driverPos)
   })
-  // userSocket.on()
+  driverSocket.on('rideInfo', pos => {
+    console.log('rideInfo event recieved at backend!', pos)
+  })
 }

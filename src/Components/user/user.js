@@ -4,8 +4,7 @@ import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
 import Map from '../map/map'
 import FinishRide from './finishRide/finishRide'
-import {findDistance, getCurrLocation} from '../../helperFunctions'
-import config from '../../config'
+import {findDistance} from '../../helperFunctions'
 
 async function setStatusAsFindRide (origin, destination) {
   let distance = await findDistance(origin, destination)
