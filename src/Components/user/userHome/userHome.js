@@ -94,7 +94,9 @@ class User extends Component {
           <button class='level-item button is-outlined' onClick={this.findRide.bind(this)}>Find Ride</button>
         </div>
         {this.state.price !== 0
-          ? <p>Estimated price: {this.state.price}</p>
+          ? <div class='content has-text-centered has-text-weight-semibold'>
+            <p><strong>Estimated price: </strong>{this.state.price}</p>
+          </div>
           : null}
         <Map
           origin={this.state.origin}
