@@ -64,7 +64,7 @@ class User extends Component {
         console.log('ERROR ', err)
       })
 
-    this.props.socket.on('driversNotAvailable', () => console.log('driversNotAvailable'))
+    this.props.socket.on('driversNotAvailable', () => this.setState({status: 'noDrivers'}))
   }
 
   render () {

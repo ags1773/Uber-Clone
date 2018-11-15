@@ -32,17 +32,16 @@ module.exports = function (socket) {
       })
   })
   socket.on('findRide', (details, userId) => {
-    // console.log('######### USER ID >>', userId)
-    // const timeoutId = []
+    let userSocket = sockets.users[userId]
     DriverModel.findDriversWithin(
       [details.userPosition.lng, details.userPosition.lat],
       config.findDriverDistance
     )
       .then(drivers => {
-        // if (drivers.length === 0) {
-        //   socket.emit('driversNotAvailable')
-        // }
-        // timeoutId[0] = setTimeout(() => socket.emit('driversNotAvailable'), driverWaitTimeout)
+        if (drivers.length === 0) {
+          userSocket.emit('driversNotAvailable')
+          return
+        }
         const driversIds = drivers.map(e => e._id)
         const driverSockets = driversIds.map(e => {
           if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
