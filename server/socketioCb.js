@@ -12,7 +12,7 @@ module.exports = function (socket) {
     type = userType
     if (userType === 'driver') {
       sockets.drivers[mongoID] = socket
-      setDiverIsOnline(true, id)
+      setDriverIsOnline(true, id)
     }
     if (userType === 'user') sockets.users[mongoID] = socket
   })
@@ -52,12 +52,13 @@ module.exports = function (socket) {
           driverSocket.emit('rideAssigned', details)
           // timeoutId[1] = setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
           driverSocket.on('rideAccepted', () => {
+            gotUserSocket(userSocket, driverSocket, driversIds[i])
             // console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
-            console.log('USER ID !!!!!!!', userId)
-            if (sockets.users.hasOwnProperty(userId)) {
-              gotUserSocket(sockets.users[userId], driverSocket, driversIds[i])
-            } else throw new Error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
-            setDiverIsOnline(false, driversIds[i], () => {
+            // console.log('USER ID !!!!!!!', userId)
+            // if (sockets.users.hasOwnProperty(userId)) {
+            //   gotUserSocket(sockets.users[userId], driverSocket, driversIds[i])
+            // } else throw new Error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
+            setDriverIsOnline(false, driversIds[i], () => {
               driversIds.splice(i, 1)
               const newDriverSockets = driversIds.map(e => {
                 if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
@@ -76,12 +77,12 @@ module.exports = function (socket) {
     if (type === 'user') delete sockets.users[id]
     if (type === 'driver') {
       delete sockets.drivers[id]
-      setDiverIsOnline(false, id)
+      setDriverIsOnline(false, id)
     }
   })
 }
 
-function setDiverIsOnline (val, driverID, callback) {
+function setDriverIsOnline (val, driverID, callback) {
   DriverModel.updateDriver(driverID,
     {
       isOnline: val
@@ -105,7 +106,7 @@ function gotUserSocket (userSocket, driverSocket, driverId) {
     userSocket.emit('endRide', price)
   })
   driverSocket.on('relayPaymentSuccess', () => {
-    setDiverIsOnline(true, driverId, () => {
+    setDriverIsOnline(true, driverId, () => {
       userSocket.emit('paymentSuccess')
     })
   })
