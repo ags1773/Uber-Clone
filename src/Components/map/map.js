@@ -48,6 +48,7 @@ class Map extends Component {
     map.setCenter(mapData.userPos) // centers map to user position
     marker.setMap(map)
     marker.setPosition(mapData.userPos)
+    marker.setIcon('../../../public/icons/baseline-my_location-24px.svg')
     // display drivers near user
     if (mapData.drivers && mapData.drivers.length !== 0) {
       let drivers = mapData.drivers

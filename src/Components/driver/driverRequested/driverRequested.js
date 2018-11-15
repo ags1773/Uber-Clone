@@ -24,7 +24,8 @@ function rideAccepted (props) { // set map origin destination & render map compo
     .catch(e => console.log('Error getting driver location ', e))
 }
 function rideDeclined (props) {
-  props.socket.emit('rideDeclined')
+  // props.socket.emit('rideDeclined')
+  props.resetRideStatus()
 }
 
 function DriverRequested (props) {

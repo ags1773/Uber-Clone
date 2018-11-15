@@ -37,6 +37,7 @@ app.use(session({
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }))
 
+app.use('/public', express.static(path.join(__dirname, '..', 'public')))
 app.use('/user', authenticateUser, express.static(path.join(__dirname, '..', 'dist')))
 app.use('/driver', authenticateDriver, express.static(path.join(__dirname, '..', 'dist')))
 app.use('/api/user', userRoutes)
