@@ -42,6 +42,7 @@ module.exports = function (socket) {
           userSocket.emit('driversNotAvailable')
           return
         }
+        let totalDrivers = drivers.length
         const driversIds = drivers.map(e => e._id)
         const driverSockets = driversIds.map(e => {
           if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
@@ -66,6 +67,12 @@ module.exports = function (socket) {
               })
               newDriverSockets.forEach(s => s.emit('rideCancelled'))
             })
+          })
+          driverSocket.on('rideDeclined', () => {
+            totalDrivers -= 1
+            if (totalDrivers === 0) {
+              userSocket.emit('driversNotAvailable')
+            }
           })
         })
       })
