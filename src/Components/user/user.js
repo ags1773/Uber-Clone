@@ -41,6 +41,20 @@ class User extends Component {
         destination: pos.destination
       })
     })
+    this.props.socket.on('endRide', price => {
+      this.setState({
+        status: 'finishRide',
+        price: price
+      })
+    })
+    this.props.socket.on('paymentSuccess', () => {
+      this.setState({
+        status: 'renderHome',
+        price: 0,
+        origin: '',
+        destination: ''
+      })
+    })
   }
 
   // ---- Lifecycle Hooks ----

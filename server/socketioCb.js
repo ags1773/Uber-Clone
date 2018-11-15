@@ -28,10 +28,11 @@ module.exports = function (socket) {
       },
       (err, result) => {
         if (err) console.log('[server] Error while updating driver in DB')
-        else console.log('[server] Driver position updated successfully in DB!')
+        // else console.log('[server] Driver position updated successfully in DB!')
       })
   })
   socket.on('findRide', (details, userId) => {
+    // console.log('######### USER ID >>', userId)
     // const timeoutId = []
     DriverModel.findDriversWithin(
       [details.userPosition.lng, details.userPosition.lat],
@@ -53,8 +54,9 @@ module.exports = function (socket) {
           // timeoutId[1] = setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
           driverSocket.on('rideAccepted', () => {
             // console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
+            console.log('USER ID !!!!!!!', userId)
             if (sockets.users.hasOwnProperty(userId)) {
-              gotUserSocket(sockets.users[userId], driverSocket)
+              gotUserSocket(sockets.users[userId], driverSocket, driversIds[i])
             } else throw new Error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
             setDiverIsOnline(false, driversIds[i], () => {
               driversIds.splice(i, 1)
@@ -93,11 +95,19 @@ function setDiverIsOnline (val, driverID, callback) {
       }
     })
 }
-function gotUserSocket (userSocket, driverSocket) {
+function gotUserSocket (userSocket, driverSocket, driverId) {
   driverSocket.on('relayDriverPosition', driverPos => {
     userSocket.emit('driverLocation', driverPos)
   })
   driverSocket.on('relayRideInfo', pos => {
     userSocket.emit('rideInfo', pos)
+  })
+  driverSocket.on('relayEndRide', price => {
+    userSocket.emit('endRide', price)
+  })
+  driverSocket.on('relayPaymentSuccess', () => {
+    setDiverIsOnline(true, driverId, () => {
+      userSocket.emit('paymentSuccess')
+    })
   })
 }

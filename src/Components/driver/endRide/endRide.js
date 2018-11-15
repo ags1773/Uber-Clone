@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function EndRide (props) {
+  props.socket.emit('relayEndRide', props.price)
   return (
     <div class='hero is-light is-bold'>
       <div class='hero-head'>
@@ -17,9 +18,14 @@ export default function EndRide (props) {
       </div>
       <div class='hero-foot'>
         <div class='control'>
-          <button class='button is-dark' onClick={props.resetRideStatus}>Ok</button>
+          <button class='button is-dark' onClick={paymentRecieved.bind(null, props)}>Ok</button>
         </div>
       </div>
     </div>
   )
+}
+
+function paymentRecieved (props) {
+  props.resetRideStatus()
+  props.socket.emit('relayPaymentSuccess')
 }
