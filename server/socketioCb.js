@@ -54,8 +54,8 @@ module.exports = function (socket) {
           // timeoutId[1] = setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
           driverSocket.on('rideAccepted', () => {
             gotUserSocket(userSocket, driverSocket, driversIds[i])
-            // console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
-            // console.log('USER ID !!!!!!!', userId)
+            console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
+            console.log('USER ID !!!!!!!', userId)
             // if (sockets.users.hasOwnProperty(userId)) {
             //   gotUserSocket(sockets.users[userId], driverSocket, driversIds[i])
             // } else throw new Error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
@@ -65,7 +65,10 @@ module.exports = function (socket) {
                 if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
                 else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
               })
-              newDriverSockets.forEach(s => s.emit('rideCancelled'))
+              newDriverSockets.forEach(s => {
+                s.emit('rideCancelled')
+                s.removeAllListeners(['rideAccepted'])
+              })
             })
           })
           driverSocket.on('rideDeclined', () => {
