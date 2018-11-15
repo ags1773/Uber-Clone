@@ -4,6 +4,7 @@ import DriverRequested from './driverRequested/driverRequested'
 import DriverToUserMap from './driverToUserMap/driverToUserMap'
 import OnRide from './onRide/onRide'
 import EndRide from './endRide/endRide'
+import {calculatePrice} from '../../helperFunctions'
 
 class Driver extends Component {
   constructor (props) {
@@ -36,10 +37,12 @@ class Driver extends Component {
       rideDetails: {}
     })
   }
-  setRideDetailsState (rideDetails) {
+  async setRideDetailsState (rideDetails) {
+    let price = await calculatePrice(rideDetails.origin, rideDetails.destination)
     this.setState({
       rideDetails: rideDetails,
-      status: 'rideAssign'
+      status: 'rideAssign',
+      price: price
     })
   }
   setMapState (obj) {
@@ -91,7 +94,8 @@ class Driver extends Component {
         component = <EndRide
           socket={this.props.socket}
           mapRenderData={this.state.mapRenderData}
-          resetRideStatus={this.resetRideStatus.bind(this)} />
+          resetRideStatus={this.resetRideStatus.bind(this)}
+          price={this.state.price} />
     }
     return component
   }

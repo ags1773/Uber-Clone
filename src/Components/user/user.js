@@ -4,11 +4,10 @@ import FindRide from './findRide/findRide'
 import WaitingForDriver from './waitingForDriver/waitingForDriver'
 import Map from '../map/map'
 import FinishRide from './finishRide/finishRide'
-import {findDistance} from '../../helperFunctions'
+import {calculatePrice} from '../../helperFunctions'
 
 async function setStatusAsFindRide (origin, destination) {
-  let distance = await findDistance(origin, destination)
-  let price = calculatePrice(distance)
+  let price = await calculatePrice(origin, destination)
   this.setState({
     status: 'findRide',
     price,
@@ -17,9 +16,6 @@ async function setStatusAsFindRide (origin, destination) {
   })
 }
 
-function calculatePrice (distance) {
-  return 40 + (distance > 4 ? (distance - 4) * 15 : 0)
-}
 class User extends Component {
   constructor (props) {
     super(props)

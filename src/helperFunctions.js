@@ -72,3 +72,8 @@ export function findDistance (origin, destination) {
     }, (response, status) => callback(response, status, resolve, reject))
   })
 }
+
+export async function calculatePrice (origin, destination) {
+  let distance = await findDistance(origin, destination)
+  return 40 + (distance > 4 ? (distance - 4) * 15 : 0)
+}
