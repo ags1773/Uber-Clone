@@ -8,11 +8,9 @@ class DriverToUserMap extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      origin: this.props.mapRenderData.origin,
-      destination: this.props.mapRenderData.destination
+      destination: this.props.mapRenderData.userLocation
     }
     socket = this.props.socket
-    console.log('PROPS mapRenderData >>', this.props.mapRenderData)
   }
   componentWillMount () {
     this.prevLat = 0
@@ -32,23 +30,31 @@ class DriverToUserMap extends Component {
     clearInterval(this.setId)
   }
   render () {
-    return (
-      <Fragment>
-        <div class='container' id='driverToUserMap'>
-          <div class='content'>
-            <p class='is-size-3 has-text-centered has-text-dark is-uppercase'>Rider pickup!</p>
-            <p><strong>Pickup Address: </strong>{this.props.mapRenderData.userAddress}</p>
+    if (this.state.origin && this.state.destination) {
+      return (
+        <Fragment>
+          <div class='container' id='driverToUserMap'>
+            <div class='content'>
+              <p class='is-size-3 has-text-centered has-text-dark is-uppercase'>Rider pickup!</p>
+              <p><strong>Pickup Address: </strong>{this.props.mapRenderData.userAddress}</p>
+            </div>
+            <div class='control'>
+              <button class='button is-dark' onClick={this.props.startRide}>Start Ride</button>
+            </div>
           </div>
-          <div class='control'>
-            <button class='button is-dark' onClick={this.props.startRide}>Start Ride</button>
-          </div>
-        </div>
-        <Map
-          origin={this.state.origin}
-          destination={this.state.destination}
-        />
-      </Fragment>
-    )
+          <Map
+            origin={this.state.origin}
+            destination={this.state.destination}
+          />
+        </Fragment>
+      )
+    } else {
+      return (
+        <Fragment>
+          <h1>Please Wait</h1>
+        </Fragment>
+      )
+    }
   }
 }
 

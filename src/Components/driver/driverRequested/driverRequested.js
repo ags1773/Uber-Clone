@@ -13,6 +13,7 @@ function rideAccepted (props) { // set map origin destination & render map compo
         const obj = { // origin => driver's location, destination => user's location
           origin: {lat: crd.latitude, lng: crd.longitude},
           // destination: {lat: props.rideDetails.origin.lat, lng: props.rideDetails.origin.lng},
+          userLocation: {lat: props.rideDetails.origin.lat, lng: props.rideDetails.origin.lng},
           destination: {lat: props.rideDetails.destination.lat, lng: props.rideDetails.destination.lng},
           userPos: {lat: crd.latitude, lng: crd.longitude},
           userAddress: props.rideDetails.origin.address

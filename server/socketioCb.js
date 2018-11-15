@@ -95,10 +95,9 @@ function setDiverIsOnline (val, driverID, callback) {
 }
 function gotUserSocket (userSocket, driverSocket) {
   driverSocket.on('relayDriverPosition', driverPos => {
-    console.log('Relaying driver pos...')
     userSocket.emit('driverLocation', driverPos)
   })
-  driverSocket.on('rideInfo', pos => {
-    console.log('rideInfo event recieved at backend!', pos)
+  driverSocket.on('relayRideInfo', pos => {
+    userSocket.emit('rideInfo', pos)
   })
 }

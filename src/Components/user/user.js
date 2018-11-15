@@ -34,6 +34,13 @@ class User extends Component {
         destination: {lat: driverPos.lat, lng: driverPos.lng}
       })
     })
+    this.props.socket.on('rideInfo', pos => {
+      this.setState({
+        status: 'trackRide',
+        origin: pos.origin,
+        destination: pos.destination
+      })
+    })
   }
 
   // ---- Lifecycle Hooks ----
@@ -85,9 +92,8 @@ class User extends Component {
         break
       case 'trackRide':
         component = <Map
-          origin={{lat: 12.9615, lng: 77.6442}}
-          destination={{lat: 12.9793, lng: 77.6406}}
-          userPos={{lat: 12.9615, lng: 77.6442}} />
+          origin={this.state.origin}
+          destination={this.state.destination} />
         break
       case 'finishRide':
         component = <FinishRide price={this.state.price} />

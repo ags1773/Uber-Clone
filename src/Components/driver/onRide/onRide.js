@@ -6,7 +6,6 @@ import config from '../../../config'
 class OnRide extends Component {
   constructor (props) {
     super(props)
-    console.log('From Onride origin, destination>>', this.props.mapRenderData.origin, this.props.mapRenderData.destination)
     this.state = {
       destination: this.props.mapRenderData.destination
     }
@@ -16,7 +15,7 @@ class OnRide extends Component {
       this.setState({
         origin: {lat: lat, lng: lng}
       }, () => {
-        this.props.socket.emit('rideInfo', {
+        this.props.socket.emit('relayRideInfo', {
           origin: this.state.origin,
           destination: this.props.mapRenderData.destination
         })
