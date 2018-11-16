@@ -97,9 +97,12 @@ class User extends Component {
           destination={{lat: this.state.destination.lat, lng: this.state.destination.lng}} />
         break
       case 'trackRide':
-        component = <Map
-          origin={this.state.origin}
-          destination={this.state.destination} />
+        component = <Fragment>
+          <h1>Ride in progress..</h1>
+          <Map
+            origin={this.state.origin}
+            destination={this.state.destination} />
+        </Fragment>
         break
       case 'finishRide':
         component = <FinishRide price={this.state.price} />

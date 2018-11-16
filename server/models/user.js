@@ -7,7 +7,11 @@ const user = mongoose.Schema({
   gender: String,
   picture: String,
   pastRides: [{type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}],
-  currentRide: {type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'}
+  currentRide: {type: mongoose.SchemaTypes.ObjectId, ref: 'Ride'},
+  outstandingAmount: Number
 })
 
-module.exports = mongoose.model('User', user)
+const Model = mongoose.model('User', user)
+
+exports.Model = Model
+exports.updateUser = (id, updateObj, callback) => Model.findOneAndUpdate({_id: id}, {$set: updateObj}, callback)

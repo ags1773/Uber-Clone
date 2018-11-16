@@ -29,6 +29,7 @@ class WaitingForDriver extends Component {
   render () {
     return (
       <Fragment>
+        <h1>Driver's live position:</h1>
         <div class='level'>
           <div class='level-item'>
             <p class='title'>Distance: {this.state.distance}</p>

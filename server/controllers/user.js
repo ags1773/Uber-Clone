@@ -31,7 +31,6 @@ exports.handleAuth = (req, res) => {
 }
 
 exports.findDrivers = (req, res) => {
-  console.log('USERLOC', req.body.userLoc)
   Drivers.findDriversWithin(req.body.userLoc, config.findDriverDistance)
     .then(drivers => res.status(200).json(drivers))
     .catch(err => res.status(500).json(err))
@@ -49,15 +48,16 @@ let getUserInfo = () => {
 }
 
 let handleUsers = (user, req, res) => {
-  Users.find({email: user.email})
+  Users.Model.find({email: user.email})
     .then(existingUser => {
       if (existingUser.length !== 0) {
         req.session.user = existingUser[0]._id
         res.redirect('/user')
         return
       }
-      let newUser = new Users({
+      let newUser = new Users.Model({
         _id: new mongoose.Types.ObjectId(),
+        outstandingAmount: 0,
         ...user
       })
       newUser.save()
@@ -72,7 +72,7 @@ let handleUsers = (user, req, res) => {
 }
 
 exports.getUserDetails = (req, res) => {
-  Users.findById({_id: req.session.user})
+  Users.Model.findById({_id: req.session.user})
     .then(user => {
       res.status(200).json(user)
     })

@@ -1,4 +1,5 @@
 const DriverModel = require('./models/driver')
+const UserModel = require('./models/user')
 const config = require('./config')
 const sockets = {drivers: {}, users: {}}
 
@@ -49,12 +50,7 @@ module.exports = function (socket) {
         driverSockets.forEach((driverSocket, i) => {
           driverSocket.emit('rideAssigned', details)
           driverSocket.on('rideAccepted', () => {
-            gotUserSocket(userSocket, driverSocket, driversIds[i])
-            console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
-            console.log('USER ID !!!!!!!', userId)
-            // if (sockets.users.hasOwnProperty(userId)) {
-            //   gotUserSocket(sockets.users[userId], driverSocket, driversIds[i])
-            // } else throw new Error(`[server] ERROR! socket not found for user with mongoId ${userId}`)
+            gotUserSocket(userSocket, driverSocket, driversIds[i], id)
             setDriverIsOnline(false, driversIds[i], () => {
               driversIds.splice(i, 1)
               const newDriverSockets = driversIds.map(e => {
@@ -101,7 +97,7 @@ function setDriverIsOnline (val, driverID, callback) {
       }
     })
 }
-function gotUserSocket (userSocket, driverSocket, driverId) {
+function gotUserSocket (userSocket, driverSocket, driverId, userId) {
   driverSocket.on('relayDriverPosition', driverPos => {
     userSocket.emit('driverLocation', driverPos)
   })
@@ -115,5 +111,15 @@ function gotUserSocket (userSocket, driverSocket, driverId) {
     setDriverIsOnline(true, driverId, () => {
       userSocket.emit('paymentSuccess')
     })
+  })
+  driverSocket.on('setPaymentDataInUserDb', price => {
+    console.log(`[$$$$$$] user ${userId} has to pay ${price} to driver ${driverId}`)
+    UserModel.updateUser(userId,
+      {
+        outstandingAmount: price
+      },
+      err => {
+        if (err) console.log('[server] Error while updating outstandingAmount in DB')
+      })
   })
 }
