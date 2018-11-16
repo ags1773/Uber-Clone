@@ -122,8 +122,8 @@ function assignDriver (details, userId) {
 }
 
 function SendRideDetailsIfFree (driverSocket, details) {
-  console.log('!!!!!!!!!!!!', driverSocket.listenerCount('rideAccepted'))
   if (driverSocket.listenerCount('rideAccepted') === 0) {
+    console.log('!!!!!!!!!!!!', driverSocket.listenerCount('rideAccepted'))
     driverSocket.emit('rideAssigned', details)
     return 1
   }
