@@ -78,7 +78,6 @@ function assignDriver (details, userId) {
     config.findDriverDistance
   )
     .then(drivers => {
-      console.log('DRIVERS!!!!!!!', drivers)
       if (drivers.length === 0) {
         userSocket.emit('driversNotAvailable')
         return
