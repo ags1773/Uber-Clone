@@ -7,8 +7,8 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:8000'
-      // '/api': 'https://chuha.herokuapp.com/'
+      // '/api': 'http://localhost:8000'
+      '/api': 'https://chuha.herokuapp.com/'
     }
   },
   module: {
