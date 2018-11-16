@@ -29,5 +29,4 @@ export default function EndRide (props) {
 function paymentRecieved (props) {
   props.resetRideStatus()
   props.socket.emit('relayPaymentSuccess')
-  props.socket.removeAllListeners(['rideAccepted'])
 }

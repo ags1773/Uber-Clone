@@ -65,6 +65,7 @@ function gotUserSocket (userSocket, driverSocket, driverId, userId) {
     userSocket.emit('endRide', price)
   })
   driverSocket.on('relayPaymentSuccess', () => {
+    driverSocket.removeAllListeners(['rideAccepted'])
     setDriverIsOnline(true, driverId, () => {
       userSocket.emit('paymentSuccess')
     })
