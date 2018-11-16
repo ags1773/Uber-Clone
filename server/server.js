@@ -6,7 +6,6 @@ const server = app.listen(port, () => console.log(`UberClone server running on p
 const io = require('socket.io').listen(server)
 
 const path = require('path')
-const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const socketioCb = require('./socketioCb')
@@ -21,13 +20,7 @@ const rideRoutes = require('./routes/ride')
 
 mongoose.connect(`${process.env.dbURI}`, { useCreateIndex: true, useNewUrlParser: true })
 
-if (process.env.MODE === 'development') {
-  const morgan = require('morgan')
-  app.use(morgan('dev'))
-}
-
 app.use(express.static(path.join(__dirname, '..', 'dist')))
-app.use(morgan('dev'))
 app.use(bodyParser.json())
 
 app.use(session({

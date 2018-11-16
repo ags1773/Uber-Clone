@@ -1,7 +1,6 @@
 const DriverModel = require('./models/driver')
 const config = require('./config')
 const sockets = {drivers: {}, users: {}}
-// const driverWaitTimeout = 10 // seconds
 
 module.exports = function (socket) {
   console.log(`[server] ${socket.id} connected`)
@@ -18,7 +17,7 @@ module.exports = function (socket) {
   })
   socket.on('driverPosition', (json) => { // fired when driver is moving
     const data = JSON.parse(json)
-    console.log(`[server] Driver ${socket.id} has moved to location ${data.position}`)
+    // console.log(`[server] Driver ${socket.id} has moved to location ${data.position}`)
     DriverModel.updateDriver(data.id,
       {
         location: {
@@ -28,7 +27,6 @@ module.exports = function (socket) {
       },
       (err, result) => {
         if (err) console.log('[server] Error while updating driver in DB')
-        // else console.log('[server] Driver position updated successfully in DB!')
       })
   })
   socket.on('findRide', (details, userId) => {
@@ -49,9 +47,7 @@ module.exports = function (socket) {
           else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
         })
         driverSockets.forEach((driverSocket, i) => {
-          // driverSocket.emit('rideAssigned', details, userId)
           driverSocket.emit('rideAssigned', details)
-          // timeoutId[1] = setTimeout(() => driverSocket.emit('rideCancelled'), driverWaitTimeout)
           driverSocket.on('rideAccepted', () => {
             gotUserSocket(userSocket, driverSocket, driversIds[i])
             console.log(`RIDE >> User ${userId} Driver ${driversIds[i]}`)
