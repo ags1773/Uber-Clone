@@ -60,9 +60,9 @@ export function findDistance (origin, destination) {
     if (status !== 'OK') {
       reject('INVALID REQUEST')
     }
-    let distance = response.rows[0].elements[0].distance.text
+    let distance = response.rows[0].elements[0].distance.value
     let duration = response.rows[0].elements[0].duration.text
-    resolve({distance, duration})
+    resolve({distance: distance + 'm', duration})
   }
   return new Promise((resolve, reject) => {
     service.getDistanceMatrix({
@@ -76,5 +76,6 @@ export function findDistance (origin, destination) {
 export async function calculatePrice (origin, destination) {
   let {distance} = await findDistance(origin, destination)
   distance = parseInt(distance)
+  distance /= 1000
   return 40 + (distance > 4 ? (distance - 4) * 15 : 0)
 }
