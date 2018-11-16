@@ -90,6 +90,7 @@ function assignDriver (details, userId) {
       })
       driverSockets.forEach((driverSocket, i) => {
         if (!SendRideDetailsIfFree(driverSocket, details)) {
+          console.log('NAHIIIIIIIIIIIII')
           totalDrivers -= 1
           if (totalDrivers === 0) {
             userSocket.emit('driversNotAvailable')
