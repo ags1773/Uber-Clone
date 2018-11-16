@@ -89,11 +89,12 @@ function assignDriver (details, userId) {
         else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
       })
       driverSockets.forEach((driverSocket, i) => {
-        if (!SendRideDetailsIfFree(driverSocket, details, totalDrivers)) {
+        if (!SendRideDetailsIfFree(driverSocket, details)) {
           totalDrivers -= 1
           if (totalDrivers === 0) {
             userSocket.emit('driversNotAvailable')
           }
+          return
         }
         driverSocket.on('rideAccepted', () => {
           gotUserSocket(userSocket, driverSocket, driversIds[i], userId)
