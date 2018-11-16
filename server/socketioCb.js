@@ -1,5 +1,4 @@
 const DriverModel = require('./models/driver')
-const UserModel = require('./models/user')
 const config = require('./config')
 const sockets = {drivers: {}, users: {}}
 
@@ -69,16 +68,6 @@ function gotUserSocket (userSocket, driverSocket, driverId, userId) {
     setDriverIsOnline(true, driverId, () => {
       userSocket.emit('paymentSuccess')
     })
-  })
-  driverSocket.on('setPaymentDataInUserDb', price => {
-    console.log(`[$$$$$$] user ${userId} has to pay ${price} to driver ${driverId}`)
-    UserModel.updateUser(userId,
-      {
-        outstandingAmount: price
-      },
-      err => {
-        if (err) console.log('[server] Error while updating outstandingAmount in DB')
-      })
   })
 }
 

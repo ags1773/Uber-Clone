@@ -98,7 +98,7 @@ class User extends Component {
         break
       case 'trackRide':
         component = <Fragment>
-          <h1>Ride in progress..</h1>
+          <h1 class='title2 has-text-centered'>Ride in progress..</h1>
           <Map
             origin={this.state.origin}
             destination={this.state.destination} />

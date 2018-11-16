@@ -2,7 +2,6 @@ import React from 'react'
 import './endRide.css'
 
 export default function EndRide (props) {
-  setPaymentDataInUserDb(props)
   props.socket.emit('relayEndRide', props.price)
   return (
     <div class='hero is-medium is-light is-bold' id='endRide'>
@@ -27,11 +26,7 @@ export default function EndRide (props) {
   )
 }
 
-function setPaymentDataInUserDb (props) {
-  props.socket.emit('setPaymentDataInUserDb', props.price)
-}
 function paymentRecieved (props) {
   props.resetRideStatus()
   props.socket.emit('relayPaymentSuccess')
-  props.socket.emit('setPaymentDataInUserDb', 0)
 }
