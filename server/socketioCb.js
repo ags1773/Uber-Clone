@@ -7,7 +7,6 @@ module.exports = function (socket) {
   console.log(`[server] ${socket.id} connected`)
   let id, type // id is mongoID, not socketID
   socket.on('userType', (userType, mongoID) => {
-    console.log(`[server] ${socket.id} userType >>`, userType, mongoID)
     id = mongoID
     type = userType
     if (userType === 'driver') {
@@ -16,9 +15,8 @@ module.exports = function (socket) {
     }
     if (userType === 'user') sockets.users[mongoID] = socket
   })
-  socket.on('driverPosition', (json) => { // fired when driver is moving
+  socket.on('driverPosition', (json) => {
     const data = JSON.parse(json)
-    // console.log(`[server] Driver ${socket.id} has moved to location ${data.position}`)
     DriverModel.updateDriver(data.id,
       {
         location: {
@@ -31,47 +29,7 @@ module.exports = function (socket) {
       })
   })
   socket.on('findRide', (details, userId) => {
-    let userSocket = sockets.users[userId]
-    DriverModel.findDriversWithin(
-      [details.userPosition.lng, details.userPosition.lat],
-      config.findDriverDistance
-    )
-      .then(drivers => {
-        if (drivers.length === 0) {
-          userSocket.emit('driversNotAvailable')
-          return
-        }
-        let totalDrivers = drivers.length
-        const driversIds = drivers.map(e => e._id)
-        const driverSockets = driversIds.map(e => {
-          if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-          else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
-        })
-        driverSockets.forEach((driverSocket, i) => {
-          driverSocket.emit('rideAssigned', details)
-          driverSocket.on('rideAccepted', () => {
-            gotUserSocket(userSocket, driverSocket, driversIds[i], id)
-            setDriverIsOnline(false, driversIds[i], () => {
-              driversIds.splice(i, 1)
-              const newDriverSockets = driversIds.map(e => {
-                if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
-                else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
-              })
-              newDriverSockets.forEach(s => {
-                s.emit('rideCancelled')
-                s.removeAllListeners(['rideAccepted'])
-              })
-            })
-          })
-          driverSocket.on('rideDeclined', () => {
-            totalDrivers -= 1
-            if (totalDrivers === 0) {
-              userSocket.emit('driversNotAvailable')
-            }
-          })
-        })
-      })
-      .catch(e => console.error(e))
+    assignDriver(details, userId)
   })
 
   socket.on('disconnect', () => {
@@ -122,4 +80,61 @@ function gotUserSocket (userSocket, driverSocket, driverId, userId) {
         if (err) console.log('[server] Error while updating outstandingAmount in DB')
       })
   })
+}
+
+function assignDriver (details, userId) {
+  let userSocket = sockets.users[userId]
+  DriverModel.findDriversWithin(
+    [details.userPosition.lng, details.userPosition.lat],
+    config.findDriverDistance
+  )
+    .then(drivers => {
+      if (drivers.length === 0) {
+        userSocket.emit('driversNotAvailable')
+        return
+      }
+      let totalDrivers = drivers.length
+      const driversIds = drivers.map(e => e._id)
+      const driverSockets = driversIds.map(e => {
+        if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+        else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+      })
+      driverSockets.forEach((driverSocket, i) => {
+        if (!SendRideDetailsIfFree(driverSocket, details, totalDrivers)) {
+          totalDrivers -= 1
+          if (totalDrivers === 0) {
+            userSocket.emit('driversNotAvailable')
+          }
+        }
+        driverSocket.on('rideAccepted', () => {
+          gotUserSocket(userSocket, driverSocket, driversIds[i], userId)
+          setDriverIsOnline(false, driversIds[i], () => {
+            driversIds.splice(i, 1)
+            const newDriverSockets = driversIds.map(e => {
+              if (sockets.drivers.hasOwnProperty(e)) return sockets.drivers[e]
+              else throw new Error(`[server] ERROR! socket not found for driver with mongoId ${e}`)
+            })
+            newDriverSockets.forEach(s => {
+              s.emit('rideCancelled')
+              s.removeAllListeners(['rideAccepted'])
+            })
+          })
+        })
+        driverSocket.on('rideDeclined', () => {
+          totalDrivers -= 1
+          if (totalDrivers === 0) {
+            userSocket.emit('driversNotAvailable')
+          }
+        })
+      })
+    })
+    .catch(e => console.error(e))
+}
+
+function SendRideDetailsIfFree (driverSocket, details) {
+  if (driverSocket.listenerCount('rideAccepted') === 0) {
+    driverSocket.emit('rideAssigned', details)
+    return 1
+  }
+  return 0
 }
